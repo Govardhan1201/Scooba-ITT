@@ -10,8 +10,9 @@ export default function Header() {
     <header className="h-16 bg-[var(--surface-1)] border-b border-[var(--border)] flex items-center justify-between px-6 z-10 shadow-sm shrink-0">
       <div className="flex items-center gap-6">
         <div className="hidden md:flex items-center gap-2">
-          <h2 className="text-lg font-heading font-bold text-[var(--text-primary)]">
+          <h2 className="text-lg font-heading font-bold text-[var(--text-primary)] flex items-center gap-2">
             {state.settings.institutionName}
+            <span className="text-[10px] bg-[var(--primary)] text-black px-2 py-0.5 rounded-full font-bold">v2.0</span>
           </h2>
           <span className="px-3 py-1 text-xs rounded-full bg-[var(--primary)]/10 text-[var(--primary)] border border-[var(--primary)]/20 font-medium tracking-wide flex items-center gap-1">
             <Sparkles className="w-3 h-3" />

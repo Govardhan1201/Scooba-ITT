@@ -58,7 +58,10 @@ export default function Login() {
           >
             <Layers className="w-10 h-10 -rotate-3 drop-shadow-[0_0_10px_rgba(22,160,133,0.5)]" />
           </motion.div>
-          <h1 className="text-3xl font-heading font-bold text-white mb-2 tracking-tight">PS-08 System</h1>
+          <h1 className="text-3xl font-heading font-bold text-white mb-2 tracking-tight flex items-center justify-center gap-3">
+            PS-08 System
+            <span className="text-xs bg-[var(--primary)] text-black px-2 py-0.5 rounded-full font-bold uppercase tracking-widest shadow-lg">v2.0</span>
+          </h1>
           <p className="text-[var(--text-secondary)]">Intelligent Faculty Workload Balancing</p>
         </div>
 
