@@ -6,7 +6,7 @@ import {
 } from '../data/mockData.js';
 import { DEFAULT_RULES } from '../engine/rules.js';
 import { getDepartmentWorkloadStats } from '../engine/workload.js';
-import { createEmptyGrid } from '../engine/timetable.js';
+import { createEmptyGrid, deriveFacultyTimetables } from '../engine/timetable.js';
 
 // ─── Initial State ────────────────────────────────────────────
 const initialState = {
@@ -259,9 +259,26 @@ const AppContext = createContext(null);
 export function AppProvider({ children }) {
   const [state, dispatch] = useReducer(appReducer, initialState);
 
-  // Derived: workload stats (recomputed when faculty/assignments/settings change)
+  // Derived: workload stats (recomputed when faculty/assignments/settings/timetable change)
+  const facultyTimetables = deriveFacultyTimetables(state.timetableGrids);
+  
+  const facultyWithDynamicLoad = state.faculty.map(f => {
+      const timetableEntries = facultyTimetables.get(f.id) || [];
+      const theoryHoursFromGrid = timetableEntries.filter(e => e.type !== 'LAB').length;
+      const labHoursFromGrid = timetableEntries.filter(e => e.type === 'LAB').length;
+
+      return {
+          ...f,
+          responsibilities: {
+              ...f.responsibilities,
+              theoryHours: (f.responsibilities?.theoryHours || 0) + theoryHoursFromGrid,
+              labHours: (f.responsibilities?.labHours || 0) + labHoursFromGrid
+          }
+      };
+  }).filter((f) => f.status !== 'ON_LEAVE');
+
   const workloadStats = getDepartmentWorkloadStats(
-    state.faculty.filter((f) => f.status !== 'ON_LEAVE'),
+    facultyWithDynamicLoad,
     state.settings.workloadWeights,
     {
       overloaded: state.settings.workloadThresholds.overloaded,

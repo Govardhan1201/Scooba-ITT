@@ -387,7 +387,7 @@ export const USERS = [
 
 // ─── System Settings ──────────────────────────────────────────
 export const DEFAULT_SETTINGS = {
-  institutionName: 'Sri Venkateswara College of Engineering',
+  institutionName: "Vignan's Institute Of Information Technology",
   departmentName: 'Department of Computer Science & Engineering',
   workloadWeights: {
     theory: 1.0, laboratory: 1.2, projectGuidance: 1.3,

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useApp, ACTIONS } from '../../context/AppContext';
-import { DAYS_SHORT, TEACHING_SLOTS, slotKey, autoSuggestPlacement } from '../../engine/timetable';
+import { DAYS_SHORT, TEACHING_SLOTS, slotKey, autoSuggestPlacement, detectCollisions } from '../../engine/timetable';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../../lib/utils';
 import { 
@@ -104,6 +104,19 @@ export default function TimetableBuilder() {
   const assignFaculty = (key, facultyId) => {
     const cell = grid[key];
     if (!cell || !cell.assignment) return;
+
+    if (facultyId) {
+      const [day, slotIdStr] = key.split('_');
+      const slotId = isNaN(slotIdStr) ? slotIdStr : Number(slotIdStr);
+      
+      const collisions = detectCollisions(state.timetableGrids, facultyId, day, slotId);
+      if (collisions.length > 0) {
+        const conflictSection = state.sections.find(s => s.id === collisions[0].sectionId);
+        showToast(`Collision Detected: Faculty is already teaching in ${conflictSection?.label} at this time.`, 'error');
+        return; 
+      }
+    }
+
     dispatch({
       type: ACTIONS.UPDATE_TIMETABLE_SLOT,
       payload: {
@@ -112,6 +125,8 @@ export default function TimetableBuilder() {
         assignment: { ...cell.assignment, facultyId }
       }
     });
+    
+    if (facultyId) showToast('Faculty Assigned', 'success', 2000);
   };
 
   // Calculate remaining hours
