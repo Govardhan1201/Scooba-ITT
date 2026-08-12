@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { Layers, LogIn, KeyRound } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Login() {
   const { state, login } = useApp();
