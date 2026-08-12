@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useApp, ACTIONS } from '../../context/AppContext';
-import { DAYS_SHORT, TEACHING_SLOTS, slotKey, autoSuggestPlacement, detectCollisions } from '../../engine/timetable';
+import { DAYS, DAYS_SHORT, TEACHING_SLOTS, slotKey, autoSuggestPlacement, detectCollisions, PHASE_LABELS } from '../../engine/timetable';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../../lib/utils';
 import { 
@@ -89,7 +89,22 @@ export default function TimetableBuilder() {
       type: ACTIONS.SET_TIMETABLE_PHASE,
       payload: { sectionId: selectedSection, phase: 'PHASE2_IN_PROGRESS' }
     });
-    showToast('Phase 1 Locked. Proceed to Phase 2 (Faculty Assignment).', 'success');
+    showToast('Phase 1 Locked. Proceed to Phase 2 — Faculty Assignment.', 'success');
+  };
+
+  const publishTimetable = () => {
+    if (!confirm('Publish the official timetable for this section? This finalises all assignments.')) return;
+    dispatch({ type: ACTIONS.PUBLISH_TIMETABLE, payload: selectedSection });
+    dispatch({
+      type: ACTIONS.ADD_NOTIFICATION,
+      payload: {
+        id: `NOTIF_${Date.now()}`, userId: 'FACULTY',
+        title: 'Timetable Published',
+        message: `The official timetable for ${section?.label} has been published.`,
+        type: 'SUCCESS', read: false, createdAt: new Date().toISOString(),
+      }
+    });
+    showToast(`Timetable for ${section?.label} published!`, 'success');
   };
 
   const unlockPhase1 = () => {
@@ -328,10 +343,15 @@ export default function TimetableBuilder() {
               <button onClick={unlockPhase1} className="btn btn-outline bg-[var(--surface-2)]">
                 <Unlock className="w-4 h-4" /> Unlock P1
               </button>
-              <button onClick={() => showToast('Timetable published successfully!', 'success')} className="btn bg-[var(--success)] text-white shadow-lg shadow-[var(--success)]/20 hover:bg-emerald-500">
+              <button onClick={publishTimetable} className="btn bg-[var(--success)] text-white shadow-lg shadow-[var(--success)]/20 hover:bg-emerald-500">
                 <Save className="w-4 h-4" /> Publish Timetable
               </button>
             </div>
+          )}
+          {phase === 'PUBLISHED' && (
+            <span className="px-4 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm font-bold flex items-center gap-2">
+              <Save className="w-4 h-4" /> Published
+            </span>
           )}
         </div>
       </div>
@@ -362,10 +382,10 @@ export default function TimetableBuilder() {
               </tr>
             </thead>
             <tbody>
-              {DAYS_SHORT.map(day => (
+              {DAYS.map((day, di) => (
                 <tr key={day} className="group">
                   <td className="p-4 bg-[var(--surface-2)]/30 group-hover:bg-[var(--surface-2)] border-b border-r border-[var(--border)] text-center transition-colors">
-                    <span className="font-heading font-bold text-[var(--text-primary)] tracking-wide">{day}</span>
+                    <span className="font-heading font-bold text-[var(--text-primary)] tracking-wide">{DAYS_SHORT[di]}</span>
                   </td>
                   {TEACHING_SLOTS.map(slot => (
                     <td key={slot.id} className="p-2 border-b border-r border-[var(--border)] bg-[var(--bg-main)]/50 align-top">

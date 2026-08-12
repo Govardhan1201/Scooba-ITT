@@ -336,6 +336,7 @@ export const ABSENCES = [
   {
     id: 'ABS_001',
     facultyId: 'FAC_003',
+    facultyName: 'Mr. Rahul Sharma',
     fromDate: '2026-08-18',
     toDate: '2026-08-20',
     reason: 'Family medical emergency',
@@ -359,11 +360,11 @@ export const ABSENCES = [
 
 // ─── Notifications ────────────────────────────────────────────
 export const NOTIFICATIONS = [
-  { id: 'NOT_001', userId: 'FAC_003', type: 'ABSENCE', message: 'Your absence intimation for Aug 18–20 is under HOD review.', read: false, createdAt: '2026-08-12T14:15:00' },
-  { id: 'NOT_002', userId: 'FAC_001', type: 'WORKLOAD', message: 'Your workload has been updated for Semester 1.', read: true, createdAt: '2026-08-10T09:00:00' },
-  { id: 'NOT_003', userId: 'HOD_001', type: 'APPROVAL', message: 'Faculty absence intimation from Mr. Rahul Sharma awaits your approval.', read: false, createdAt: '2026-08-12T14:15:00' },
-  { id: 'NOT_004', userId: 'HOD_001', type: 'WORKLOAD', message: 'Workload imbalance detected: Dr. Sunita Rao is overloaded (110%).', read: false, createdAt: '2026-08-11T11:00:00' },
-  { id: 'NOT_005', userId: 'ASST_001', type: 'REQUEST', message: 'New absence intimation received from Mr. Rahul Sharma.', read: false, createdAt: '2026-08-12T10:30:00' },
+  { id: 'NOT_001', userId: 'FAC_003', type: 'ABSENCE', title: 'Absence Under Review', message: 'Your absence intimation for Aug 18–20 is under HOD review.', read: false, createdAt: '2026-08-12T14:15:00' },
+  { id: 'NOT_002', userId: 'FAC_001', type: 'WORKLOAD', title: 'Workload Updated', message: 'Your workload has been updated for Semester 1.', read: true, createdAt: '2026-08-10T09:00:00' },
+  { id: 'NOT_003', userId: 'HOD_001', type: 'APPROVAL', title: 'New Absence Request', message: 'Faculty absence intimation from Mr. Rahul Sharma awaits your approval.', read: false, createdAt: '2026-08-12T14:15:00' },
+  { id: 'NOT_004', userId: 'HOD_001', type: 'WORKLOAD', title: 'Workload Imbalance Detected', message: 'Workload imbalance detected: Dr. Sunita Rao is overloaded (110%).', read: false, createdAt: '2026-08-11T11:00:00' },
+  { id: 'NOT_005', userId: 'ASST_001', type: 'REQUEST', title: 'New Absence Intimation', message: 'New absence intimation received from Mr. Rahul Sharma.', read: false, createdAt: '2026-08-12T10:30:00' },
 ];
 
 // ─── Audit Log ────────────────────────────────────────────────

@@ -9,6 +9,9 @@ import { cn } from '../../lib/utils';
 
 export default function Dashboard() {
   const { state, workloadStats, pendingApprovals } = useApp();
+  const role = state.currentUser?.role;
+  const dashTitle = role === 'HOD' ? 'HOD Dashboard' : role === 'ASST_HOD' ? 'Assistant HOD Dashboard' : 'Dashboard';
+  const pendingAbsences = state.absences.filter(a => a.status === 'PENDING_HOD').length;
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -32,7 +35,7 @@ export default function Dashboard() {
     >
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-heading font-bold text-white tracking-tight">HOD Dashboard</h1>
+          <h1 className="text-3xl font-heading font-bold text-white tracking-tight">{dashTitle}</h1>
           <p className="text-[var(--text-secondary)] mt-1 text-sm md:text-base">Overview of academic health and workload distribution</p>
         </div>
         <div className="flex gap-3">
@@ -70,7 +73,7 @@ export default function Dashboard() {
         />
         <KPICard 
           title="Pending Approvals" 
-          value={pendingApprovals.total} 
+          value={pendingAbsences} 
           icon={CheckSquare} 
           color="var(--warning)" 
           bgClass="from-[var(--warning)]/20 to-[var(--surface-2)] border-[var(--warning)]/30"
