@@ -16,20 +16,32 @@ export default function Sidebar() {
   const toggleSidebar = () => dispatch({ type: ACTIONS.TOGGLE_SIDEBAR });
 
   const getLinks = () => {
-    switch(state.currentUser?.role) {
-      case 'HOD':
-        return [
-          { to: '/hod/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-          { to: '/hod/timetable', icon: Calendar, label: 'Timetable Builder' },
-          { to: '/hod/workload', icon: BarChart3, label: 'Workload' },
-          { to: '/hod/optimization', icon: Activity, label: 'Optimization' },
-          { to: '/hod/approvals', icon: CheckSquare, label: 'Approvals' },
-          { to: '/hod/faculty', icon: Users, label: 'Faculty' },
-          { to: '/hod/academic-setup', icon: Layers, label: 'Academic Setup' },
-          { to: '/hod/settings', icon: Settings, label: 'Settings' },
-        ];
-      default: return [];
+    const role = state.currentUser?.role;
+    const base = role === 'HOD' ? '/hod' : role === 'ASST_HOD' ? '/asst-hod' : '/faculty';
+
+    if (role === 'HOD' || role === 'ASST_HOD') {
+      return [
+        { to: `${base}/dashboard`, icon: LayoutDashboard, label: 'Dashboard' },
+        { to: `${base}/timetable`, icon: Calendar, label: 'Timetable Builder' },
+        { to: `${base}/workload`, icon: BarChart3, label: 'Workload' },
+        { to: `${base}/optimization`, icon: Activity, label: 'Optimization' },
+        { to: `${base}/approvals`, icon: CheckSquare, label: 'Approvals', badge: state.absences.filter(a => a.status === 'PENDING_HOD').length },
+        { to: `${base}/faculty`, icon: Users, label: 'Faculty' },
+        { to: `${base}/academic-setup`, icon: Layers, label: 'Academic Setup' },
+        { to: `${base}/settings`, icon: Settings, label: 'Settings' },
+      ];
     }
+
+    if (role === 'FACULTY') {
+      return [
+        { to: '/faculty/dashboard', icon: LayoutDashboard, label: 'My Dashboard' },
+        { to: '/faculty/timetable', icon: Calendar, label: 'My Timetable' },
+        { to: '/faculty/workload', icon: BarChart3, label: 'My Workload' },
+        { to: '/faculty/profile', icon: Users, label: 'My Profile' },
+      ];
+    }
+
+    return [];
   };
 
   const links = getLinks();
@@ -80,10 +92,18 @@ export default function Sidebar() {
                 <link.icon className={cn("w-5 h-5 z-10 shrink-0 transition-colors", isActive ? "text-black" : "text-[var(--primary-light)] group-hover:text-[var(--primary)]")} />
                 <motion.span 
                   animate={{ opacity: collapsed ? 0 : 1, width: collapsed ? 0 : 'auto' }}
-                  className="z-10 whitespace-nowrap font-medium"
+                  className="z-10 whitespace-nowrap font-medium flex-1"
                 >
                   {link.label}
                 </motion.span>
+                {!collapsed && link.badge > 0 && (
+                  <motion.span
+                    animate={{ opacity: collapsed ? 0 : 1 }}
+                    className={cn("z-10 text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center leading-none", isActive ? "bg-black/30 text-black" : "bg-red-500 text-white")}
+                  >
+                    {link.badge}
+                  </motion.span>
+                )}
               </>
             )}
           </NavLink>
