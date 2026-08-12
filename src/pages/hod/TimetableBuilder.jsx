@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useApp, ACTIONS } from '../../context/AppContext';
-import { DAYS_SHORT, TEACHING_SLOTS, slotKey, autoSuggestPlacement, TIMETABLE_PHASES } from '../../engine/timetable';
-import { rankFacultyForSlot } from '../../engine/suitability';
+import { DAYS_SHORT, TEACHING_SLOTS, slotKey, autoSuggestPlacement } from '../../engine/timetable';
+import { motion, AnimatePresence } from 'framer-motion';
+import { cn } from '../../lib/utils';
 import { 
-  CheckCircle, AlertTriangle, AlertCircle, 
-  Lock, Unlock, RefreshCw, Save 
+  Lock, Unlock, RefreshCw, Save, X, GripVertical, AlertCircle, Play
 } from 'lucide-react';
 
 export default function TimetableBuilder() {
@@ -13,16 +13,13 @@ export default function TimetableBuilder() {
   const [selectedSection, setSelectedSection] = useState(state.sections[0]?.id);
   const [draggedSubject, setDraggedSubject] = useState(null);
   
-  // Get data for selected section
   const section = state.sections.find(s => s.id === selectedSection);
   const phase = state.timetablePhases[selectedSection] || 'NOT_STARTED';
   const grid = state.timetableGrids[selectedSection] || {};
   
-  // Get required subjects for this section
   const sectionSubjectIds = state.sectionSubjects[selectedSection] || [];
   const requiredSubjects = state.subjects.filter(s => sectionSubjectIds.includes(s.id));
 
-  // Initialize phase if not started
   useEffect(() => {
     if (phase === 'NOT_STARTED' && selectedSection) {
       dispatch({ 
@@ -38,7 +35,7 @@ export default function TimetableBuilder() {
       type: ACTIONS.INIT_TIMETABLE_GRID,
       payload: { sectionId: selectedSection, grid: suggestedGrid }
     });
-    showToast('Auto-suggested placement applied (Phase 1)');
+    showToast('AI Auto-suggested placement applied for Phase 1');
   };
 
   const handleClearGrid = () => {
@@ -54,6 +51,7 @@ export default function TimetableBuilder() {
     if (phase === 'PHASE2_IN_PROGRESS' || phase === 'PUBLISHED') return;
     setDraggedSubject(subject);
     e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', subject.id);
   };
 
   const handleDrop = (e, day, slotId) => {
@@ -87,17 +85,15 @@ export default function TimetableBuilder() {
   };
 
   const lockPhase1 = () => {
-    // Validate that all hours are met (skipping strict check for prototype ease, but would go here)
     dispatch({
       type: ACTIONS.SET_TIMETABLE_PHASE,
       payload: { sectionId: selectedSection, phase: 'PHASE2_IN_PROGRESS' }
     });
-    showToast('Phase 1 Locked. Phase 2 (Faculty Assignment) started.', 'success');
+    showToast('Phase 1 Locked. Proceed to Phase 2 (Faculty Assignment).', 'success');
   };
 
   const unlockPhase1 = () => {
     if (confirm('Unlocking will clear all faculty assignments. Proceed?')) {
-      // In a real app, we'd loop and clear facultyId from grid cells
       dispatch({
         type: ACTIONS.SET_TIMETABLE_PHASE,
         payload: { sectionId: selectedSection, phase: 'PHASE1_DRAFT' }
@@ -108,7 +104,6 @@ export default function TimetableBuilder() {
   const assignFaculty = (key, facultyId) => {
     const cell = grid[key];
     if (!cell || !cell.assignment) return;
-    
     dispatch({
       type: ACTIONS.UPDATE_TIMETABLE_SLOT,
       payload: {
@@ -119,60 +114,79 @@ export default function TimetableBuilder() {
     });
   };
 
-  // ─── Render Helpers ─────────────────────────────────────
-  
-  // Calculate remaining hours for Phase 1
+  // Calculate remaining hours
+  const placedCounts = {};
+  Object.values(grid).forEach(cell => {
+    if (cell?.assignment?.subjectId) {
+      placedCounts[cell.assignment.subjectId] = (placedCounts[cell.assignment.subjectId] || 0) + 1;
+    }
+  });
+
   const renderSubjectBank = () => {
     if (phase !== 'PHASE1_DRAFT') return null;
 
-    const placedCounts = {};
-    Object.values(grid).forEach(cell => {
-      if (cell?.assignment?.subjectId) {
-        placedCounts[cell.assignment.subjectId] = (placedCounts[cell.assignment.subjectId] || 0) + 1;
-      }
-    });
-
     return (
-      <div className="glass-panel p-4 rounded-xl mb-6">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="font-heading font-bold text-lg">Subject Bank</h3>
-          <div className="flex gap-2">
-            <button onClick={handleAutoSuggest} className="btn btn-outline text-xs py-1">
-              <RefreshCw className="w-3 h-3" /> Auto-Suggest
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="glass-panel p-6 rounded-2xl mb-6 relative overflow-hidden"
+      >
+        <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--accent)]/5 rounded-full blur-[80px]"></div>
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 relative z-10 gap-4">
+          <div>
+            <h3 className="font-heading font-bold text-xl text-white">Subject Bank</h3>
+            <p className="text-sm text-[var(--text-secondary)]">Drag subjects to the timetable slots</p>
+          </div>
+          <div className="flex gap-3">
+            <button onClick={handleAutoSuggest} className="btn btn-outline hover:bg-[var(--primary)]/10 text-sm shadow-sm group">
+              <SparklesIcon className="w-4 h-4 text-[var(--primary)] group-hover:rotate-12 transition-transform" /> 
+              AI Auto-Suggest
             </button>
-            <button onClick={handleClearGrid} className="btn btn-secondary text-xs py-1">
+            <button onClick={handleClearGrid} className="btn btn-secondary text-sm">
               Clear Grid
             </button>
           </div>
         </div>
-        <div className="flex flex-wrap gap-3">
+
+        <div className="flex flex-wrap gap-3 relative z-10">
           {requiredSubjects.map(sub => {
             const placed = placedCounts[sub.id] || 0;
             const needed = sub.hoursPerWeek;
             const complete = placed >= needed;
             
             return (
-              <div 
+              <motion.div 
+                whileHover={!complete ? { scale: 1.05, y: -2 } : {}}
+                whileTap={!complete ? { scale: 0.95 } : {}}
                 key={sub.id}
                 draggable={!complete}
                 onDragStart={(e) => handleDragStart(e, sub)}
-                className={`
-                  p-2 px-3 border rounded-lg cursor-grab
-                  ${complete ? 'bg-[var(--surface-3)] border-[var(--border)] opacity-50 cursor-not-allowed' : 'bg-[var(--surface-2)] border-[var(--primary)] hover:border-[var(--primary-light)]'}
-                `}
+                className={cn(
+                  "p-3 pr-4 rounded-xl border flex gap-3 shadow-sm select-none",
+                  complete 
+                    ? "bg-[var(--surface-3)] border-[var(--border)] opacity-60 cursor-not-allowed" 
+                    : "bg-[var(--surface-1)] border-[var(--border-accent)] cursor-grab active:cursor-grabbing hover:border-[var(--primary)] hover:shadow-[var(--primary)]/10"
+                )}
               >
-                <div className="font-bold text-sm text-[var(--text-primary)]">{sub.name}</div>
-                <div className="flex justify-between mt-1 text-xs text-[var(--text-secondary)]">
-                  <span>{sub.type}</span>
-                  <span className={complete ? 'text-[var(--success)]' : ''}>
-                    {placed} / {needed} h
-                  </span>
+                <div className={cn("flex flex-col justify-center items-center w-6 opacity-50", complete && "hidden")}>
+                  <GripVertical className="w-4 h-4" />
                 </div>
-              </div>
+                <div>
+                  <div className="font-bold text-sm text-[var(--text-primary)] mb-1">{sub.name}</div>
+                  <div className="flex items-center gap-3 text-[11px] font-mono">
+                    <span className={cn("px-1.5 py-0.5 rounded text-[10px]", sub.type === 'LAB' ? 'bg-purple-500/20 text-purple-300' : 'bg-blue-500/20 text-blue-300')}>
+                      {sub.type}
+                    </span>
+                    <span className={cn(complete ? 'text-[var(--success)] font-bold' : 'text-[var(--text-secondary)]')}>
+                      {placed} / {needed} hrs
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
             );
           })}
         </div>
-      </div>
+      </motion.div>
     );
   };
 
@@ -186,54 +200,70 @@ export default function TimetableBuilder() {
     if (!subject) {
       return (
         <div 
-          className={`h-full min-h-[80px] rounded-lg border-2 border-dashed ${phase === 'PHASE1_DRAFT' ? 'border-[var(--border)] hover:border-[var(--primary)] transition-colors' : 'border-transparent bg-[var(--surface-1)]'}`}
+          className={cn(
+            "h-full w-full min-h-[90px] rounded-xl border-2 border-dashed transition-all duration-200 flex items-center justify-center relative group",
+            phase === 'PHASE1_DRAFT' 
+              ? draggedSubject ? "border-[var(--primary)]/30 bg-[var(--primary)]/5" : "border-[var(--border)] hover:border-[var(--primary)]/50" 
+              : "border-transparent bg-[var(--surface-1)] opacity-50"
+          )}
           onDrop={(e) => handleDrop(e, day, slot.id)}
           onDragOver={handleDragOver}
-        ></div>
+        >
+          {phase === 'PHASE1_DRAFT' && !draggedSubject && (
+            <div className="opacity-0 group-hover:opacity-100 absolute inset-0 bg-gradient-to-br from-[var(--surface-2)] to-[var(--surface-1)] rounded-xl flex items-center justify-center transition-opacity">
+              <span className="text-[10px] uppercase tracking-wider text-[var(--text-muted)] font-bold">Drop Here</span>
+            </div>
+          )}
+        </div>
       );
     }
 
     return (
-      <div className={`
-        relative h-full min-h-[80px] p-2 rounded-lg border flex flex-col justify-between
-        ${subject.type === 'LAB' ? 'bg-purple-900/20 border-purple-700/50' : 'bg-[var(--surface-2)] border-[var(--border)]'}
-      `}>
-        {/* Phase 1 Subject info */}
+      <motion.div 
+        layoutId={`cell-${key}`}
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className={cn(
+          "relative h-full w-full min-h-[90px] p-2.5 rounded-xl border flex flex-col justify-between group shadow-sm transition-colors",
+          subject.type === 'LAB' 
+            ? "bg-purple-900/10 border-purple-500/30 hover:border-purple-500/60" 
+            : "bg-[var(--surface-2)] border-[var(--border-accent)] hover:border-[var(--primary)]/60"
+        )}
+      >
         <div>
-          <div className="text-xs font-bold truncate text-[var(--text-primary)]" title={subject.name}>
+          <div className="text-xs font-bold leading-tight text-[var(--text-primary)] mb-1 line-clamp-2" title={subject.name}>
             {subject.name}
           </div>
-          <div className="text-[10px] text-[var(--text-secondary)]">{subject.code}</div>
+          <div className="text-[10px] text-[var(--text-muted)] font-mono">{subject.code}</div>
         </div>
 
-        {/* Phase 1 Remove Button */}
         {phase === 'PHASE1_DRAFT' && (
           <button 
             onClick={() => handleRemoveSubject(key)}
-            className="absolute top-1 right-1 w-5 h-5 rounded-full bg-red-900/50 text-red-300 flex items-center justify-center hover:bg-red-500 hover:text-white text-xs"
+            className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-[var(--surface-1)] border border-[var(--border)] text-[var(--text-muted)] flex items-center justify-center opacity-0 group-hover:opacity-100 hover:bg-red-500/20 hover:text-red-400 hover:border-red-500/30 transition-all shadow-md z-10"
           >
-            ×
+            <X className="w-3 h-3" />
           </button>
         )}
 
-        {/* Phase 2 Faculty Assignment */}
         {(phase === 'PHASE2_IN_PROGRESS' || phase === 'PUBLISHED') && (
-          <div className="mt-2">
+          <div className="mt-2 pt-2 border-t border-[var(--border)]/50">
             {faculty ? (
-              <div className="text-xs font-medium text-[var(--primary-light)] truncate bg-[var(--surface-3)] px-1.5 py-0.5 rounded border border-[var(--border-accent)] flex justify-between items-center">
-                <span className="truncate">{faculty.name}</span>
+              <div className="flex items-center justify-between gap-1 bg-[var(--surface-1)] rounded px-1.5 py-1 border border-[var(--primary)]/20 text-xs">
+                <span className="truncate text-[var(--primary-light)] font-semibold">{faculty.name}</span>
                 {phase === 'PHASE2_IN_PROGRESS' && (
-                  <button onClick={() => assignFaculty(key, null)} className="ml-1 text-red-400 hover:text-red-300">×</button>
+                  <button onClick={() => assignFaculty(key, null)} className="text-[var(--text-muted)] hover:text-red-400 shrink-0">
+                    <X className="w-3 h-3" />
+                  </button>
                 )}
               </div>
             ) : (
               <select 
-                className="w-full text-xs bg-[var(--surface-3)] border border-yellow-600/50 rounded p-1 text-yellow-100 focus:outline-none focus:border-[var(--primary)]"
+                className="w-full text-xs bg-[var(--warning)]/10 border border-[var(--warning)]/30 rounded py-1 px-1 text-[var(--warning)] font-medium focus:outline-none focus:ring-1 focus:ring-[var(--warning)] appearance-none cursor-pointer"
                 onChange={(e) => assignFaculty(key, e.target.value)}
                 value=""
               >
                 <option value="" disabled>Assign Faculty...</option>
-                {/* Normally we'd use the suitability engine here to rank */}
                 {state.faculty.map(f => (
                   <option key={f.id} value={f.id}>{f.name}</option>
                 ))}
@@ -241,22 +271,30 @@ export default function TimetableBuilder() {
             )}
           </div>
         )}
-      </div>
+      </motion.div>
     );
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="space-y-6 max-w-[1600px] mx-auto pb-10"
+    >
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-heading font-bold text-white">Timetable Builder</h1>
-          <p className="text-[var(--text-secondary)]">
-            {phase === 'PHASE1_DRAFT' ? 'Phase 1: Drag and drop subjects to slots' : 'Phase 2: Assign faculty to placed subjects'}
+          <h1 className="text-3xl font-heading font-bold text-white tracking-tight">Timetable Builder</h1>
+          <p className="text-[var(--text-secondary)] mt-1 flex items-center gap-2">
+            {phase === 'PHASE1_DRAFT' 
+              ? <><div className="w-2 h-2 rounded-full bg-[var(--info)]"></div> Phase 1: Subject Placement</>
+              : <><div className="w-2 h-2 rounded-full bg-[var(--warning)]"></div> Phase 2: Faculty Assignment</>
+            }
           </p>
         </div>
-        <div className="flex items-center gap-4">
+
+        <div className="flex flex-wrap items-center gap-3">
           <select 
-            className="input-field max-w-[250px]"
+            className="input-field max-w-[250px] shadow-sm font-medium"
             value={selectedSection}
             onChange={(e) => setSelectedSection(e.target.value)}
           >
@@ -266,54 +304,77 @@ export default function TimetableBuilder() {
           </select>
           
           {phase === 'PHASE1_DRAFT' && (
-            <button onClick={lockPhase1} className="btn btn-primary">
+            <button onClick={lockPhase1} className="btn btn-primary shadow-lg shadow-[var(--primary)]/20">
               <Lock className="w-4 h-4" /> Lock Phase 1
             </button>
           )}
           {phase === 'PHASE2_IN_PROGRESS' && (
             <div className="flex gap-2">
-              <button onClick={unlockPhase1} className="btn btn-secondary">
+              <button onClick={unlockPhase1} className="btn btn-outline bg-[var(--surface-2)]">
                 <Unlock className="w-4 h-4" /> Unlock P1
               </button>
-              <button onClick={() => showToast('Timetable published!')} className="btn btn-primary bg-[var(--success)] text-white">
-                <Save className="w-4 h-4" /> Publish
+              <button onClick={() => showToast('Timetable published successfully!', 'success')} className="btn bg-[var(--success)] text-white shadow-lg shadow-[var(--success)]/20 hover:bg-emerald-500">
+                <Save className="w-4 h-4" /> Publish Timetable
               </button>
             </div>
           )}
         </div>
       </div>
 
-      {renderSubjectBank()}
+      <AnimatePresence>
+        {renderSubjectBank()}
+      </AnimatePresence>
 
-      <div className="glass-panel rounded-xl overflow-x-auto border border-[var(--border)]">
-        <table className="w-full text-left min-w-[1000px] border-collapse">
-          <thead>
-            <tr>
-              <th className="p-3 bg-[var(--surface-2)] border-b border-r border-[var(--border)] w-24 text-center font-heading text-sm text-[var(--text-secondary)]">Day / Time</th>
-              {TEACHING_SLOTS.map(slot => (
-                <th key={slot.id} className="p-3 bg-[var(--surface-2)] border-b border-r border-[var(--border)] text-center font-heading text-sm text-[var(--text-secondary)] w-40">
-                  <div className="font-bold text-[var(--text-primary)]">Period {slot.period}</div>
-                  <div className="text-[10px]">{slot.label}</div>
+      <motion.div 
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.1 }}
+        className="glass-panel rounded-2xl overflow-hidden border border-[var(--border)] shadow-xl"
+      >
+        <div className="overflow-x-auto scrollbar-thin">
+          <table className="w-full text-left min-w-[1100px] border-collapse table-fixed">
+            <thead>
+              <tr>
+                <th className="p-4 bg-[var(--surface-2)]/50 border-b border-r border-[var(--border)] w-24 text-center">
+                  <div className="text-xs uppercase tracking-widest font-bold text-[var(--text-muted)]">Day</div>
                 </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {DAYS_SHORT.map(day => (
-              <tr key={day}>
-                <td className="p-3 bg-[var(--surface-2)] border-b border-r border-[var(--border)] text-center font-bold text-[var(--text-primary)]">
-                  {day}
-                </td>
                 {TEACHING_SLOTS.map(slot => (
-                  <td key={slot.id} className="p-2 border-b border-r border-[var(--border)] bg-[var(--surface-1)] align-top h-[100px]">
-                    {renderGridCell(day, slot)}
-                  </td>
+                  <th key={slot.id} className="p-3 bg-[var(--surface-2)]/50 border-b border-r border-[var(--border)] text-center w-[14%]">
+                    <div className="font-bold text-[var(--text-primary)] text-sm mb-0.5">Period {slot.period}</div>
+                    <div className="text-[10px] text-[var(--primary-light)] font-mono bg-[var(--primary)]/10 inline-block px-1.5 py-0.5 rounded">{slot.label}</div>
+                  </th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+            </thead>
+            <tbody>
+              {DAYS_SHORT.map(day => (
+                <tr key={day} className="group">
+                  <td className="p-4 bg-[var(--surface-2)]/30 group-hover:bg-[var(--surface-2)] border-b border-r border-[var(--border)] text-center transition-colors">
+                    <span className="font-heading font-bold text-[var(--text-primary)] tracking-wide">{day}</span>
+                  </td>
+                  {TEACHING_SLOTS.map(slot => (
+                    <td key={slot.id} className="p-2 border-b border-r border-[var(--border)] bg-[var(--bg-main)]/50 align-top">
+                      {renderGridCell(day, slot)}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function SparklesIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>
+      <path d="M20 3v4"/>
+      <path d="M22 5h-4"/>
+      <path d="M4 17v2"/>
+      <path d="M5 18H3"/>
+    </svg>
   );
 }

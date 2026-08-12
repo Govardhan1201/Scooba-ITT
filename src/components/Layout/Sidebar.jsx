@@ -1,8 +1,10 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useApp, ACTIONS } from '../../context/AppContext';
+import { motion } from 'framer-motion';
+import { cn } from '../../lib/utils';
 import { 
-  LayoutDashboard, Calendar, Users, BookOpen, Layers,
+  LayoutDashboard, Calendar, Users, Layers,
   BarChart3, Settings, LogOut, ChevronLeft, ChevronRight,
   CheckSquare, Activity
 } from 'lucide-react';
@@ -26,7 +28,6 @@ export default function Sidebar() {
           { to: '/hod/academic-setup', icon: Layers, label: 'Academic Setup' },
           { to: '/hod/settings', icon: Settings, label: 'Settings' },
         ];
-      // Other roles omitted for brevity right now
       default: return [];
     }
   };
@@ -34,51 +35,82 @@ export default function Sidebar() {
   const links = getLinks();
 
   return (
-    <div className={`sidebar ${collapsed ? 'collapsed' : ''}`}>
-      <div className="h-16 flex items-center justify-between px-4 border-b border-[var(--border)]">
-        {!collapsed && (
-          <div className="flex items-center gap-2 text-[var(--primary)] font-bold text-xl font-heading">
-            <Layers className="w-6 h-6" />
-            <span>PS-08</span>
+    <motion.div 
+      initial={false}
+      animate={{ width: collapsed ? 80 : 280 }}
+      className="relative h-full bg-[var(--surface-1)] border-r border-[var(--border)] flex flex-col z-20 shadow-xl"
+    >
+      <div className="h-16 flex items-center justify-between px-4 border-b border-[var(--border)] shrink-0">
+        <div className="flex items-center gap-3 overflow-hidden whitespace-nowrap">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[var(--primary)] to-[var(--accent)] flex items-center justify-center shrink-0 shadow-lg shadow-[var(--primary)]/20">
+            <Layers className="w-6 h-6 text-black" />
           </div>
-        )}
-        {collapsed && <Layers className="w-6 h-6 mx-auto text-[var(--primary)]" />}
+          <motion.span 
+            animate={{ opacity: collapsed ? 0 : 1, display: collapsed ? 'none' : 'block' }}
+            className="text-[var(--primary)] font-bold text-xl font-heading tracking-tight"
+          >
+            PS-08 System
+          </motion.span>
+        </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto py-4 flex flex-col gap-1 px-3">
+      <div className="flex-1 overflow-y-auto py-6 px-3 flex flex-col gap-2 scrollbar-thin">
         {links.map((link) => (
           <NavLink
             key={link.to}
             to={link.to}
-            className={({ isActive }) => `
-              flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors
-              ${isActive ? 'bg-[var(--primary)] text-black' : 'text-[var(--text-secondary)] hover:bg-[var(--surface-2)] hover:text-[var(--text-primary)]'}
-            `}
+            className={({ isActive }) => cn(
+              "flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-200 group relative overflow-hidden",
+              isActive 
+                ? "text-black font-semibold shadow-md"
+                : "text-[var(--text-secondary)] hover:bg-[var(--surface-2)] hover:text-[var(--text-primary)]"
+            )}
             title={collapsed ? link.label : undefined}
           >
-            <link.icon className="w-5 h-5 flex-shrink-0" />
-            {!collapsed && <span className="font-medium whitespace-nowrap">{link.label}</span>}
+            {({ isActive }) => (
+              <>
+                {isActive && (
+                  <motion.div 
+                    layoutId="activeTab" 
+                    className="absolute inset-0 bg-gradient-to-r from-[var(--primary)] to-[var(--primary-light)] z-0" 
+                    initial={false}
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  />
+                )}
+                <link.icon className={cn("w-5 h-5 z-10 shrink-0 transition-colors", isActive ? "text-black" : "text-[var(--primary-light)] group-hover:text-[var(--primary)]")} />
+                <motion.span 
+                  animate={{ opacity: collapsed ? 0 : 1, width: collapsed ? 0 : 'auto' }}
+                  className="z-10 whitespace-nowrap font-medium"
+                >
+                  {link.label}
+                </motion.span>
+              </>
+            )}
           </NavLink>
         ))}
       </div>
 
-      <div className="p-3 border-t border-[var(--border)]">
+      <div className="p-4 border-t border-[var(--border)] shrink-0">
         <button
           onClick={logout}
-          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-red-400 hover:bg-red-950/30 hover:text-red-300 w-full transition-colors"
+          className="flex items-center gap-3 px-3 py-3 rounded-xl text-red-400 hover:bg-red-950/30 hover:text-red-300 w-full transition-colors overflow-hidden"
           title={collapsed ? "Logout" : undefined}
         >
-          <LogOut className="w-5 h-5 flex-shrink-0" />
-          {!collapsed && <span className="font-medium whitespace-nowrap">Logout</span>}
+          <LogOut className="w-5 h-5 shrink-0" />
+          <motion.span animate={{ opacity: collapsed ? 0 : 1, width: collapsed ? 0 : 'auto' }} className="font-medium whitespace-nowrap">
+            Logout
+          </motion.span>
         </button>
       </div>
 
       <button 
         onClick={toggleSidebar}
-        className="absolute -right-3 top-20 bg-[var(--surface-2)] border border-[var(--border)] rounded-full p-1 text-[var(--text-secondary)] hover:text-[var(--primary)]"
+        className="absolute -right-4 top-20 bg-[var(--surface-2)] border border-[var(--border)] rounded-full p-1.5 text-[var(--text-secondary)] hover:text-[var(--primary)] shadow-md z-30 transition-transform hover:scale-110"
       >
-        {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+        <motion.div animate={{ rotate: collapsed ? 180 : 0 }}>
+          <ChevronLeft className="w-4 h-4" />
+        </motion.div>
       </button>
-    </div>
+    </motion.div>
   );
 }
