@@ -42,8 +42,11 @@ const initialState = {
   rules: DEFAULT_RULES,
 
   // Access Control
-  asstHodAccessCode: null,      // HOD-generated code to unlock Asst HOD portal
-  asstHodUnlocked: false,       // whether current session has unlocked it
+  asstHodAccessCode: null,
+  asstHodUnlocked: false,
+
+  // Registered users (user-created accounts beyond hardcoded USERS)
+  registeredUsers: [],
 
   // UI State
   sidebarCollapsed: false,
@@ -120,6 +123,11 @@ export const ACTIONS = {
   // Access
   GENERATE_ACCESS_CODE: 'GENERATE_ACCESS_CODE',
   UNLOCK_ASST_HOD: 'UNLOCK_ASST_HOD',
+
+  // User Registration & Profile
+  REGISTER_USER: 'REGISTER_USER',
+  UPDATE_PROFILE: 'UPDATE_PROFILE',
+  RESET_PASSWORD: 'RESET_PASSWORD',
 };
 
 // ─── Reducer ──────────────────────────────────────────────────
@@ -268,6 +276,24 @@ function appReducer(state, action) {
     case ACTIONS.UNLOCK_ASST_HOD:
       return { ...state, asstHodUnlocked: true };
 
+    // Registration & Profile
+    case ACTIONS.REGISTER_USER:
+      return { ...state, registeredUsers: [...state.registeredUsers, action.payload] };
+    case ACTIONS.UPDATE_PROFILE:
+      // Update both currentUser and the registered user entry
+      return {
+        ...state,
+        currentUser: state.currentUser?.id === action.payload.id ? { ...state.currentUser, ...action.payload } : state.currentUser,
+        registeredUsers: state.registeredUsers.map(u => u.id === action.payload.id ? { ...u, ...action.payload } : u),
+      };
+    case ACTIONS.RESET_PASSWORD:
+      return {
+        ...state,
+        registeredUsers: state.registeredUsers.map(u =>
+          u.email === action.payload.email ? { ...u, password: action.payload.password } : u
+        ),
+      };
+
     default:
       return state;
   }
@@ -347,13 +373,39 @@ export function AppProvider({ children }) {
 
   // Auth helpers
   const login = (email, password) => {
-    const user = USERS.find((u) => u.email === email && u.password === password);
+    // Check hardcoded users first, then registered users
+    const user =
+      USERS.find((u) => (u.email === email || u.empId === email) && u.password === password) ??
+      state.registeredUsers.find((u) => (u.email === email || u.empId === email) && u.password === password);
     if (user) {
       dispatch({ type: ACTIONS.LOGIN, payload: user });
-      return user;   // return the user object so callers can inspect role
+      return user;
     }
-    dispatch({ type: ACTIONS.AUTH_ERROR, payload: 'Invalid email or password.' });
+    dispatch({ type: ACTIONS.AUTH_ERROR, payload: 'Invalid ID/email or password.' });
     return null;
+  };
+
+  const register = (userData) => {
+    // Check for duplicate ID or email
+    const allUsers = [...USERS, ...state.registeredUsers];
+    if (allUsers.find(u => u.empId === userData.empId)) return { error: 'ID Number already registered.' };
+    if (allUsers.find(u => u.email === userData.email)) return { error: 'Email already registered.' };
+    const newUser = { ...userData, id: `USR_${Date.now()}` };
+    dispatch({ type: ACTIONS.REGISTER_USER, payload: newUser });
+    // If they are faculty, also add to faculty list
+    if (userData.role === 'FACULTY') {
+      dispatch({
+        type: ACTIONS.ADD_FACULTY,
+        payload: {
+          id: `FAC_${Date.now()}`, name: userData.name, empId: userData.empId,
+          email: userData.email, designation: userData.designation || 'Assistant Professor',
+          specialization: '', status: 'ACTIVE', skills: [], responsibilities: {
+            theoryHours: 0, labHours: 0, projectHours: 0, examHours: 0, mentoringHours: 0, deptHours: 0
+          },
+        }
+      });
+    }
+    return { success: true, user: newUser };
   };
 
   const logout = () => dispatch({ type: ACTIONS.LOGOUT });
@@ -368,6 +420,7 @@ export function AppProvider({ children }) {
       addAuditEntry,
       showToast,
       login,
+      register,
       logout,
       users: USERS,
     }}>

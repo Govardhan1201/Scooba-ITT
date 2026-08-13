@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AppProvider, useApp } from './context/AppContext';
 import Layout from './components/Layout/Layout';
 import Login from './pages/Login';
+import Register from './pages/Register';
 
 import HODDashboard from './pages/hod/Dashboard';
 import TimetableBuilder from './pages/hod/TimetableBuilder';
@@ -35,6 +36,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
 
       {/* HOD Routes */}
       <Route path="/hod" element={
