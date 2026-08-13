@@ -120,7 +120,7 @@ export default function TimetableBuilder() {
       return;
     }
     if (!confirm('Publish the official timetable for this section? This finalises all assignments.')) return;
-    dispatch({ type: ACTIONS.PUBLISH_TIMETABLE, payload: selectedSection });
+    dispatch({ type: ACTIONS.PUBLISH_TIMETABLE, payload: { sectionId: selectedSection } });
     dispatch({
       type: ACTIONS.ADD_NOTIFICATION,
       payload: {
@@ -131,6 +131,22 @@ export default function TimetableBuilder() {
       }
     });
     showToast(`Timetable for ${section?.label} published!`, 'success');
+  };
+
+  const submitProposal = () => {
+    dispatch({
+      type: ACTIONS.SUBMIT_PROPOSAL,
+      payload: {
+        id: `PROP_${Date.now()}`,
+        sectionId: selectedSection,
+        sectionLabel: section?.label,
+        submittedBy: state.currentUser.name,
+        timestamp: new Date().toISOString(),
+        status: 'PENDING_HOD',
+        gridChanges: grid, // Snapshot of the current grid
+      }
+    });
+    showToast(`Timetable Proposal submitted to HOD for approval!`, 'success');
   };
 
   const unlockPhase1 = () => {
@@ -490,9 +506,15 @@ export default function TimetableBuilder() {
               <button onClick={unlockPhase1} className="btn btn-outline bg-[var(--surface-2)]">
                 <Unlock className="w-4 h-4" /> Unlock P1
               </button>
-              <button onClick={publishTimetable} className="btn bg-[var(--success)] text-white shadow-lg shadow-[var(--success)]/20 hover:bg-emerald-500">
-                <Save className="w-4 h-4" /> Publish Timetable
-              </button>
+              {state.currentUser.role === 'ASST_HOD' ? (
+                <button onClick={submitProposal} className="btn bg-blue-500/10 text-blue-400 border border-blue-500/30 hover:bg-blue-500/20">
+                  <Save className="w-4 h-4" /> Submit Proposal
+                </button>
+              ) : (
+                <button onClick={publishTimetable} className="btn bg-[var(--success)] text-white shadow-lg shadow-[var(--success)]/20 hover:bg-emerald-500">
+                  <Save className="w-4 h-4" /> Publish Timetable
+                </button>
+              )}
             </div>
           )}
           {phase === 'PUBLISHED' && (

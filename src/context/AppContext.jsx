@@ -37,6 +37,9 @@ const initialState = {
   // Section-Subject Mapping
   sectionSubjects: SECTION_SUBJECTS,
 
+  // Assistant HOD Proposals
+  timetableProposals: [],
+
   // Settings
   settings: DEFAULT_SETTINGS,
   rules: DEFAULT_RULES,
@@ -86,6 +89,11 @@ export const ACTIONS = {
   CLEAR_TIMETABLE_SLOT: 'CLEAR_TIMETABLE_SLOT',
   SET_TIMETABLE_PHASE: 'SET_TIMETABLE_PHASE',
   PUBLISH_TIMETABLE: 'PUBLISH_TIMETABLE',
+  
+  // Proposals
+  SUBMIT_PROPOSAL: 'SUBMIT_PROPOSAL',
+  APPROVE_PROPOSAL: 'APPROVE_PROPOSAL',
+  REJECT_PROPOSAL: 'REJECT_PROPOSAL',
 
   // Section-Subject Mapping
   SET_SECTION_SUBJECTS: 'SET_SECTION_SUBJECTS',
@@ -211,10 +219,37 @@ function appReducer(state, action) {
     case ACTIONS.PUBLISH_TIMETABLE:
       return {
         ...state,
-        timetablePhases: { ...state.timetablePhases, [action.payload]: 'PUBLISHED' },
+        timetablePhases: { ...state.timetablePhases, [action.payload.sectionId]: 'PUBLISHED' },
       };
 
-    // Section Subjects
+    // Proposals
+    case ACTIONS.SUBMIT_PROPOSAL:
+      return {
+        ...state,
+        timetableProposals: [...state.timetableProposals, action.payload]
+      };
+    case ACTIONS.APPROVE_PROPOSAL: {
+      const propApprove = state.timetableProposals.find(p => p.id === action.payload);
+      if (!propApprove) return state;
+      return {
+        ...state,
+        timetableProposals: state.timetableProposals.map(p => p.id === action.payload ? { ...p, status: 'APPROVED' } : p),
+        timetableGrids: {
+          ...state.timetableGrids,
+          [propApprove.sectionId]: {
+            ...state.timetableGrids[propApprove.sectionId],
+            ...propApprove.gridChanges
+          }
+        }
+      };
+    }
+    case ACTIONS.REJECT_PROPOSAL:
+      return {
+        ...state,
+        timetableProposals: state.timetableProposals.map(p => p.id === action.payload ? { ...p, status: 'REJECTED' } : p)
+      };
+
+    // Section-Subject Mappings
     case ACTIONS.SET_SECTION_SUBJECTS:
       return {
         ...state,

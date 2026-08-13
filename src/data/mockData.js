@@ -1,403 +1,2907 @@
+
 // ============================================================
-// MOCK DATA — Realistic Full-Semester Dataset
-// Academic Year 2026-27, Semester 1 (Active)
-// Department: Computer Science Engineering (CSE)
+// AUTO-GENERATED FROM EXCEL DATA
 // ============================================================
 
-import { createEmptyGrid, slotKey, DAYS } from '../engine/timetable.js';
-
-// ─── Academic Year & Semester ─────────────────────────────────
-export const ACADEMIC_YEARS = [
-  { id: 'AY_2026', name: '2026–27', startDate: '2026-06-01', endDate: '2027-05-31', status: 'ACTIVE' },
-  { id: 'AY_2025', name: '2025–26', startDate: '2025-06-01', endDate: '2026-05-31', status: 'ARCHIVED' },
-];
-
-export const SEMESTERS = [
+export const MOCK_SUBJECTS = [
   {
-    id: 'SEM_1',
-    academicYearId: 'AY_2026',
-    name: 'Semester 1',
-    number: 1,
-    startDate: '2026-07-01',
-    endDate: '2026-12-15',
-    status: 'ACTIVE',
+    "id": "SUB_MFCS",
+    "code": "MFCS",
+    "name": "Mathematical Foundations of Computer Science",
+    "type": "THEORY",
+    "hoursPerWeek": 5,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
   },
   {
-    id: 'SEM_2',
-    academicYearId: 'AY_2026',
-    name: 'Semester 2',
-    number: 2,
-    startDate: '2027-01-10',
-    endDate: '2027-05-30',
-    status: 'UPCOMING',
+    "id": "SUB_DLCO",
+    "code": "DLCO",
+    "name": "Digital Logic & Computer Organization",
+    "type": "THEORY",
+    "hoursPerWeek": 5,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
   },
-];
-
-// ─── Departments & Sections ───────────────────────────────────
-export const DEPARTMENTS = [
-  { id: 'DEPT_CSE', name: 'Computer Science Engineering', code: 'CSE' },
-  { id: 'DEPT_IT', name: 'Information Technology', code: 'IT' },
-];
-
-export const SECTIONS = [
-  { id: 'SEC_CSE_2A', deptId: 'DEPT_CSE', year: 2, section: 'A', label: 'CSE – 2nd Year A', strength: 60, semesterId: 'SEM_1', advisorId: 'FAC_002' },
-  { id: 'SEC_CSE_2B', deptId: 'DEPT_CSE', year: 2, section: 'B', label: 'CSE – 2nd Year B', strength: 62, semesterId: 'SEM_1', advisorId: 'FAC_005' },
-  { id: 'SEC_CSE_3A', deptId: 'DEPT_CSE', year: 3, section: 'A', label: 'CSE – 3rd Year A', strength: 58, semesterId: 'SEM_1', advisorId: 'FAC_003' },
-  { id: 'SEC_IT_2A',  deptId: 'DEPT_IT',  year: 2, section: 'A', label: 'IT – 2nd Year A',  strength: 55, semesterId: 'SEM_1', advisorId: 'FAC_009' },
-];
-
-// ─── Rooms & Labs ─────────────────────────────────────────────
-export const ROOMS = [
-  { id: 'ROOM_101', name: 'Room 101', type: 'CLASSROOM', capacity: 65, department: 'DEPT_CSE' },
-  { id: 'ROOM_102', name: 'Room 102', type: 'CLASSROOM', capacity: 65, department: 'DEPT_CSE' },
-  { id: 'ROOM_103', name: 'Room 103', type: 'CLASSROOM', capacity: 65, department: 'DEPT_CSE' },
-  { id: 'ROOM_104', name: 'Room 104', type: 'CLASSROOM', capacity: 65, department: 'DEPT_IT' },
-  { id: 'LAB_CSE_1', name: 'CS Lab 1', type: 'COMPUTER_LAB', capacity: 60, department: 'DEPT_CSE', equipment: ['Linux workstations', 'Oracle DB'] },
-  { id: 'LAB_CSE_2', name: 'CS Lab 2', type: 'COMPUTER_LAB', capacity: 60, department: 'DEPT_CSE', equipment: ['Windows PCs', 'Visual Studio'] },
-  { id: 'LAB_IT_1',  name: 'IT Lab 1', type: 'COMPUTER_LAB', capacity: 55, department: 'DEPT_IT' },
-  { id: 'ROOM_SEMINAR', name: 'Seminar Hall', type: 'SEMINAR', capacity: 150 },
-];
-
-// ─── Faculty ──────────────────────────────────────────────────
-export const FACULTY = [
   {
-    id: 'FAC_001',
-    name: 'Dr. Arjun Mehta',
-    empId: 'CSE001',
-    email: 'arjun.mehta@college.edu',
-    phone: '9876543210',
-    designation: 'Professor',
-    department: 'DEPT_CSE',
-    status: 'ACTIVE',
-    photo: null,
-    qualification: 'Ph.D. Computer Science',
-    specialization: 'Database Systems',
-    customWorkloadLimit: null,
-    skills: [
-      { subjectId: 'SUB_DBMS', level: 'Expert' },
-      { subjectId: 'SUB_DS', level: 'Advanced' },
-      { subjectId: 'SUB_OS', level: 'Intermediate' },
+    "id": "SUB_SE",
+    "code": "SE",
+    "name": "Software Engineering",
+    "type": "THEORY",
+    "hoursPerWeek": 5,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_JAVA",
+    "code": "JAVA",
+    "name": "Object Oriented Programming through JAVA",
+    "type": "THEORY",
+    "hoursPerWeek": 5,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_UHV",
+    "code": "UHV",
+    "name": "Universal Human Values – Understanding Harmony and Ethical Conduct",
+    "type": "THEORY",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_ES",
+    "code": "ES",
+    "name": "Environmental Science",
+    "type": "THEORY",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_JAVA_LAB",
+    "code": "JAVA LAB",
+    "name": "Object Oriented Programming through JAVA Lab",
+    "type": "LAB",
+    "hoursPerWeek": 2,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 3,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_CT_LAB",
+    "code": "CT LAB",
+    "name": "CASE Tools Lab",
+    "type": "LAB",
+    "hoursPerWeek": 2,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 3,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_FSD",
+    "code": "FSD",
+    "name": "Full Stack Development",
+    "type": "THEORY",
+    "hoursPerWeek": 2,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_WT",
+    "code": "WT",
+    "name": "Weekly Test",
+    "type": "THEORY",
+    "hoursPerWeek": 2,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_UP",
+    "code": "UP",
+    "name": "Upskill / Upskilling",
+    "type": "THEORY",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_LCS",
+    "code": "LCS",
+    "name": "Sports / Library / Counselling",
+    "type": "THEORY",
+    "hoursPerWeek": 2,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_DR._K._NIHARIKA",
+    "code": "DR. K. NIHARIKA",
+    "name": "MFCS",
+    "type": "THEORY",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_MS._G._JYOTHI",
+    "code": "MS. G. JYOTHI",
+    "name": "MFCS",
+    "type": "THEORY",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_MS._G._BHAGVASI",
+    "code": "MS. G. BHAGVASI",
+    "name": "MFCS",
+    "type": "THEORY",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_NARAVA_JAYA_LALITHA",
+    "code": "NARAVA JAYA LALITHA",
+    "name": "MFCS",
+    "type": "THEORY",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_MR._K._RAMAPPALA_NAIDU",
+    "code": "MR. K. RAMAPPALA NAIDU",
+    "name": "MFCS",
+    "type": "THEORY",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_MRS._GOTTUMUKKALA_JYOTHI",
+    "code": "MRS. GOTTUMUKKALA JYOTHI",
+    "name": "MFCS",
+    "type": "THEORY",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_MRS._P._VANI_MANIKAYAM",
+    "code": "MRS. P. VANI MANIKAYAM",
+    "name": "DLCO",
+    "type": "THEORY",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_M._JYOTHIRMAY",
+    "code": "M. JYOTHIRMAY",
+    "name": "DLCO / FSD",
+    "type": "THEORY",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_RAJESWARI_MODHALAVALASA",
+    "code": "RAJESWARI MODHALAVALASA",
+    "name": "DLCO / LCS / WT / UP (in some sections)",
+    "type": "THEORY",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_DR._K._MADHUSUDHANA_RAO",
+    "code": "DR. K. MADHUSUDHANA RAO",
+    "name": "DLCO",
+    "type": "THEORY",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_MR._VVRL_SASTRY",
+    "code": "MR. VVRL SASTRY",
+    "name": "SE / CT Lab",
+    "type": "LAB",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 3,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_CH._SRIDEVI",
+    "code": "CH. SRIDEVI",
+    "name": "SE / CT Lab",
+    "type": "LAB",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 3,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_K._PRASANNALATHA",
+    "code": "K. PRASANNALATHA",
+    "name": "SE / CT Lab",
+    "type": "LAB",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 3,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_MS._GOKETI_PRANATHI",
+    "code": "MS. GOKETI PRANATHI",
+    "name": "SE / CT Lab / LCS / WT / UP",
+    "type": "LAB",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 3,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_MR._A.V.V._CHAKRAPANI",
+    "code": "MR. A.V.V. CHAKRAPANI",
+    "name": "JAVA / JAVA LAB",
+    "type": "LAB",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 3,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_MRS._J._PRIYANKA",
+    "code": "MRS. J. PRIYANKA",
+    "name": "JAVA / JAVA LAB",
+    "type": "LAB",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 3,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_GUDEPU_LAVANYA",
+    "code": "GUDEPU LAVANYA",
+    "name": "JAVA / JAVA LAB / LCS / WT / UP",
+    "type": "LAB",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 3,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_MR._Y._HARI_KRISHNA",
+    "code": "MR. Y. HARI KRISHNA",
+    "name": "JAVA / JAVA LAB / LCS / WT / UP",
+    "type": "LAB",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 3,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_DR._K._SIRISHA",
+    "code": "DR. K. SIRISHA",
+    "name": "ES",
+    "type": "THEORY",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_MR._YOGESH",
+    "code": "MR. YOGESH",
+    "name": "ES",
+    "type": "THEORY",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_MS._A._TEJASWI",
+    "code": "MS. A. TEJASWI",
+    "name": "UHV",
+    "type": "THEORY",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_MS._B._JAYASI",
+    "code": "MS. B. JAYASI",
+    "name": "UHV",
+    "type": "THEORY",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_DR._R._HANUMANTHA_RAO",
+    "code": "DR. R. HANUMANTHA RAO",
+    "name": "UHV",
+    "type": "THEORY",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_CHINTA_MEENAKSHI",
+    "code": "CHINTA MEENAKSHI",
+    "name": "UHV",
+    "type": "THEORY",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_MRS._SHALINI_BHARIDE",
+    "code": "MRS. SHALINI BHARIDE",
+    "name": "FSD",
+    "type": "THEORY",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_MRS._SRAVANI",
+    "code": "MRS. SRAVANI",
+    "name": "FSD",
+    "type": "THEORY",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_MRS._T._KEERTHANA",
+    "code": "MRS. T. KEERTHANA",
+    "name": "FSD / JAVA LAB",
+    "type": "LAB",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 3,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_MRS._NEKKANTI_RENU",
+    "code": "MRS. NEKKANTI RENU",
+    "name": "FSD",
+    "type": "THEORY",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_MR._GUVVADA_NAGARAJU",
+    "code": "MR. GUVVADA NAGARAJU",
+    "name": "FSD",
+    "type": "THEORY",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_MRS._K._VISALA",
+    "code": "MRS. K. VISALA",
+    "name": "FSD",
+    "type": "THEORY",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 4,
+    "department": "DEPT_CSE"
+  },
+  {
+    "id": "SUB_DR._S._NAGA_MALLIK_RAJ",
+    "code": "DR. S. NAGA MALLIK RAJ",
+    "name": "CT Lab",
+    "type": "LAB",
+    "hoursPerWeek": 4,
+    "year": 2,
+    "semester": 1,
+    "difficulty": 3,
+    "department": "DEPT_CSE"
+  }
+];
+
+export const MOCK_FACULTY = [
+  {
+    "id": "FAC_001",
+    "name": "Ch. Sridevi",
+    "empId": "CSE001",
+    "email": "chsridevi@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_SE",
+        "level": "Expert"
+      },
+      {
+        "subjectId": "SUB_CT_LAB",
+        "level": "Expert"
+      }
     ],
-    preferences: [
-      { subjectId: 'SUB_DBMS', level: 'preferred' },
-      { subjectId: 'SUB_DS', level: 'neutral' },
+    "preferences": [
+      {
+        "subjectId": "SUB_SE",
+        "level": "preferred"
+      },
+      {
+        "subjectId": "SUB_CT_LAB",
+        "level": "preferred"
+      }
     ],
-    availability: {
-      Monday: 'full', Tuesday: 'full', Wednesday: 'full',
-      Thursday: 'full', Friday: 'full', Saturday: 'morning',
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
     },
-    responsibilities: {
-      theoryHours: 0, labHours: 0, projectHours: 2, examHours: 2,
-      mentoringHours: 1, deptHours: 1,
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
     },
-    joinDate: '2015-07-01',
+    "joinDate": "2020-01-01"
   },
   {
-    id: 'FAC_002',
-    name: 'Dr. Priya Krishnan',
-    empId: 'CSE002',
-    email: 'priya.krishnan@college.edu',
-    phone: '9876543211',
-    designation: 'Associate Professor',
-    department: 'DEPT_CSE',
-    status: 'ACTIVE',
-    photo: null,
-    qualification: 'Ph.D. Algorithms',
-    specialization: 'Data Structures & Algorithms',
-    customWorkloadLimit: null,
-    skills: [
-      { subjectId: 'SUB_DS', level: 'Expert' },
-      { subjectId: 'SUB_ADA', level: 'Expert' },
-      { subjectId: 'SUB_DBMS', level: 'Advanced' },
+    "id": "FAC_002",
+    "name": "Chinta Meenakshi",
+    "empId": "CSE002",
+    "email": "chintameenakshi@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_UHV",
+        "level": "Expert"
+      }
     ],
-    preferences: [{ subjectId: 'SUB_DS', level: 'preferred' }, { subjectId: 'SUB_ADA', level: 'preferred' }],
-    availability: { Monday: 'full', Tuesday: 'full', Wednesday: 'full', Thursday: 'full', Friday: 'full', Saturday: 'full' },
-    responsibilities: { theoryHours: 0, labHours: 0, projectHours: 1, examHours: 2, mentoringHours: 1, deptHours: 0.5 },
-    joinDate: '2018-07-01',
+    "preferences": [
+      {
+        "subjectId": "SUB_UHV",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
   },
   {
-    id: 'FAC_003',
-    name: 'Mr. Rahul Sharma',
-    empId: 'CSE003',
-    email: 'rahul.sharma@college.edu',
-    phone: '9876543212',
-    designation: 'Assistant Professor',
-    department: 'DEPT_CSE',
-    status: 'ACTIVE',
-    photo: null,
-    qualification: 'M.Tech Computer Science',
-    specialization: 'Computer Networks',
-    customWorkloadLimit: null,
-    skills: [
-      { subjectId: 'SUB_CN', level: 'Expert' },
-      { subjectId: 'SUB_OS', level: 'Expert' },
-      { subjectId: 'SUB_DS', level: 'Intermediate' },
-    ],
-    preferences: [{ subjectId: 'SUB_CN', level: 'preferred' }],
-    availability: { Monday: 'full', Tuesday: 'full', Wednesday: 'full', Thursday: 'full', Friday: 'full', Saturday: 'full' },
-    responsibilities: { theoryHours: 0, labHours: 0, projectHours: 1, examHours: 1, mentoringHours: 0.5, deptHours: 0.5 },
-    joinDate: '2020-07-01',
+    "id": "FAC_003",
+    "name": "Dr. A. Sampath",
+    "empId": "CSE003",
+    "email": "drasampath@college.edu",
+    "phone": "9876543210",
+    "designation": "Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "Ph.D.",
+    "specialization": "Computer Science",
+    "skills": [],
+    "preferences": [],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
   },
   {
-    id: 'FAC_004',
-    name: 'Dr. Sunita Rao',
-    empId: 'CSE004',
-    email: 'sunita.rao@college.edu',
-    phone: '9876543213',
-    designation: 'Associate Professor',
-    department: 'DEPT_CSE',
-    status: 'ACTIVE',
-    photo: null,
-    qualification: 'Ph.D. Machine Learning',
-    specialization: 'AI & Machine Learning',
-    customWorkloadLimit: null,
-    skills: [
-      { subjectId: 'SUB_AI', level: 'Expert' },
-      { subjectId: 'SUB_ML', level: 'Expert' },
-      { subjectId: 'SUB_PYTHON', level: 'Advanced' },
-    ],
-    preferences: [{ subjectId: 'SUB_AI', level: 'preferred' }, { subjectId: 'SUB_ML', level: 'preferred' }],
-    availability: { Monday: 'full', Tuesday: 'full', Wednesday: 'full', Thursday: 'full', Friday: 'full', Saturday: 'morning' },
-    responsibilities: { theoryHours: 0, labHours: 0, projectHours: 2, examHours: 2, mentoringHours: 1, deptHours: 1 },
-    joinDate: '2017-01-01',
+    "id": "FAC_004",
+    "name": "Dr. B. Dhanuanjay",
+    "empId": "CSE004",
+    "email": "drbdhanuanjay@college.edu",
+    "phone": "9876543210",
+    "designation": "Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "Ph.D.",
+    "specialization": "Computer Science",
+    "skills": [],
+    "preferences": [],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
   },
   {
-    id: 'FAC_005',
-    name: 'Ms. Kavya Nair',
-    empId: 'CSE005',
-    email: 'kavya.nair@college.edu',
-    phone: '9876543214',
-    designation: 'Assistant Professor',
-    department: 'DEPT_CSE',
-    status: 'ACTIVE',
-    photo: null,
-    qualification: 'M.Tech Software Engineering',
-    specialization: 'Software Engineering & Testing',
-    customWorkloadLimit: null,
-    skills: [
-      { subjectId: 'SUB_SE', level: 'Expert' },
-      { subjectId: 'SUB_PYTHON', level: 'Expert' },
-      { subjectId: 'SUB_DBMS', level: 'Advanced' },
-    ],
-    preferences: [{ subjectId: 'SUB_SE', level: 'preferred' }],
-    availability: { Monday: 'full', Tuesday: 'full', Wednesday: 'full', Thursday: 'full', Friday: 'full', Saturday: 'full' },
-    responsibilities: { theoryHours: 0, labHours: 0, projectHours: 0, examHours: 1, mentoringHours: 0.5, deptHours: 0 },
-    joinDate: '2022-07-01',
+    "id": "FAC_005",
+    "name": "Dr. Ch. Swapna Priya",
+    "empId": "CSE005",
+    "email": "drchswapnapriya@college.edu",
+    "phone": "9876543210",
+    "designation": "Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "Ph.D.",
+    "specialization": "Computer Science",
+    "skills": [],
+    "preferences": [],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
   },
   {
-    id: 'FAC_006',
-    name: 'Dr. Vikram Patel',
-    empId: 'CSE006',
-    email: 'vikram.patel@college.edu',
-    phone: '9876543215',
-    designation: 'Professor',
-    department: 'DEPT_CSE',
-    status: 'ACTIVE',
-    photo: null,
-    qualification: 'Ph.D. Computer Architecture',
-    specialization: 'Computer Organization',
-    customWorkloadLimit: null,
-    skills: [
-      { subjectId: 'SUB_COA', level: 'Expert' },
-      { subjectId: 'SUB_OS', level: 'Advanced' },
-    ],
-    preferences: [{ subjectId: 'SUB_COA', level: 'preferred' }],
-    availability: { Monday: 'full', Tuesday: 'full', Wednesday: 'morning', Thursday: 'full', Friday: 'full', Saturday: 'none' },
-    responsibilities: { theoryHours: 0, labHours: 0, projectHours: 1, examHours: 2, mentoringHours: 1, deptHours: 2 },
-    joinDate: '2012-01-01',
+    "id": "FAC_006",
+    "name": "Dr. K. G. K. Patnaik",
+    "empId": "CSE006",
+    "email": "drkgkpatnaik@college.edu",
+    "phone": "9876543210",
+    "designation": "Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "Ph.D.",
+    "specialization": "Computer Science",
+    "skills": [],
+    "preferences": [],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
   },
   {
-    id: 'FAC_007',
-    name: 'Mr. Arun Kumar',
-    empId: 'CSE007',
-    email: 'arun.kumar@college.edu',
-    phone: '9876543216',
-    designation: 'Assistant Professor',
-    department: 'DEPT_CSE',
-    status: 'ACTIVE',
-    photo: null,
-    qualification: 'M.Tech Computer Science',
-    specialization: 'Web Technologies',
-    customWorkloadLimit: null,
-    skills: [
-      { subjectId: 'SUB_WT', level: 'Expert' },
-      { subjectId: 'SUB_PYTHON', level: 'Advanced' },
-      { subjectId: 'SUB_DS', level: 'Beginner' },
+    "id": "FAC_007",
+    "name": "Dr. K. Madhusudhana Rao",
+    "empId": "CSE007",
+    "email": "drkmadhusudhanarao@college.edu",
+    "phone": "9876543210",
+    "designation": "Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "Ph.D.",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_DLCO",
+        "level": "Expert"
+      }
     ],
-    preferences: [{ subjectId: 'SUB_WT', level: 'preferred' }],
-    availability: { Monday: 'full', Tuesday: 'full', Wednesday: 'full', Thursday: 'full', Friday: 'full', Saturday: 'full' },
-    responsibilities: { theoryHours: 0, labHours: 0, projectHours: 0.5, examHours: 1, mentoringHours: 0.5, deptHours: 0 },
-    joinDate: '2023-01-01',
+    "preferences": [
+      {
+        "subjectId": "SUB_DLCO",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
   },
   {
-    id: 'FAC_008',
-    name: 'Dr. Meera Singh',
-    empId: 'CSE008',
-    email: 'meera.singh@college.edu',
-    phone: '9876543217',
-    designation: 'Associate Professor',
-    department: 'DEPT_CSE',
-    status: 'ON_LEAVE',
-    photo: null,
-    qualification: 'Ph.D. Compiler Design',
-    specialization: 'Theory of Computation',
-    customWorkloadLimit: null,
-    skills: [
-      { subjectId: 'SUB_TOC', level: 'Expert' },
-      { subjectId: 'SUB_CD', level: 'Expert' },
+    "id": "FAC_008",
+    "name": "Dr. K. Niharika",
+    "empId": "CSE008",
+    "email": "drkniharika@college.edu",
+    "phone": "9876543210",
+    "designation": "Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "Ph.D.",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_MFCS",
+        "level": "Expert"
+      }
     ],
-    preferences: [],
-    availability: { Monday: 'none', Tuesday: 'none', Wednesday: 'none', Thursday: 'none', Friday: 'none', Saturday: 'none' },
-    responsibilities: { theoryHours: 0, labHours: 0, projectHours: 0, examHours: 0, mentoringHours: 0, deptHours: 0 },
-    joinDate: '2019-07-01',
+    "preferences": [
+      {
+        "subjectId": "SUB_MFCS",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
   },
   {
-    id: 'FAC_009',
-    name: 'Mr. Kiran Desai',
-    empId: 'IT001',
-    email: 'kiran.desai@college.edu',
-    phone: '9876543218',
-    designation: 'Assistant Professor',
-    department: 'DEPT_IT',
-    status: 'ACTIVE',
-    photo: null,
-    qualification: 'M.Tech IT',
-    specialization: 'Networking',
-    customWorkloadLimit: null,
-    skills: [
-      { subjectId: 'SUB_CN', level: 'Advanced' },
-      { subjectId: 'SUB_WT', level: 'Intermediate' },
-    ],
-    preferences: [],
-    availability: { Monday: 'full', Tuesday: 'full', Wednesday: 'full', Thursday: 'full', Friday: 'full', Saturday: 'full' },
-    responsibilities: { theoryHours: 0, labHours: 0, projectHours: 0.5, examHours: 1, mentoringHours: 0.5, deptHours: 0 },
-    joinDate: '2021-07-01',
+    "id": "FAC_009",
+    "name": "Dr. K. Ramesh Babu",
+    "empId": "CSE009",
+    "email": "drkrameshbabu@college.edu",
+    "phone": "9876543210",
+    "designation": "Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "Ph.D.",
+    "specialization": "Computer Science",
+    "skills": [],
+    "preferences": [],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
   },
+  {
+    "id": "FAC_010",
+    "name": "Dr. K. Sirisha",
+    "empId": "CSE010",
+    "email": "drksirisha@college.edu",
+    "phone": "9876543210",
+    "designation": "Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "Ph.D.",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_ES",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_ES",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_011",
+    "name": "Dr. M. V. Krishna Mohan",
+    "empId": "CSE011",
+    "email": "drmvkrishnamohan@college.edu",
+    "phone": "9876543210",
+    "designation": "Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "Ph.D.",
+    "specialization": "Computer Science",
+    "skills": [],
+    "preferences": [],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_012",
+    "name": "Dr. N. Thirupathi Rao",
+    "empId": "CSE012",
+    "email": "drnthirupathirao@college.edu",
+    "phone": "9876543210",
+    "designation": "Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "Ph.D.",
+    "specialization": "Computer Science",
+    "skills": [],
+    "preferences": [],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_013",
+    "name": "Dr. Omkar Lakshmi Jagan",
+    "empId": "CSE013",
+    "email": "dromkarlakshmijagan@college.edu",
+    "phone": "9876543210",
+    "designation": "Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "Ph.D.",
+    "specialization": "Computer Science",
+    "skills": [],
+    "preferences": [],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_014",
+    "name": "Dr. R. Hanumantha Rao",
+    "empId": "CSE014",
+    "email": "drrhanumantharao@college.edu",
+    "phone": "9876543210",
+    "designation": "Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "Ph.D.",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_UHV",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_UHV",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_015",
+    "name": "Dr. S. Naga Mallik Raj",
+    "empId": "CSE015",
+    "email": "drsnagamallikraj@college.edu",
+    "phone": "9876543210",
+    "designation": "Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "Ph.D.",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_CT_LAB",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_CT_LAB",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_016",
+    "name": "Gudepu Lavanya",
+    "empId": "CSE016",
+    "email": "gudepulavanya@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_JAVA",
+        "level": "Expert"
+      },
+      {
+        "subjectId": "SUB_JAVA",
+        "level": "Expert"
+      },
+      {
+        "subjectId": "SUB_LCS",
+        "level": "Expert"
+      },
+      {
+        "subjectId": "SUB_WT",
+        "level": "Expert"
+      },
+      {
+        "subjectId": "SUB_UP",
+        "level": "Expert"
+      },
+      {
+        "subjectId": "SUB_UP",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_JAVA",
+        "level": "preferred"
+      },
+      {
+        "subjectId": "SUB_JAVA",
+        "level": "preferred"
+      },
+      {
+        "subjectId": "SUB_LCS",
+        "level": "preferred"
+      },
+      {
+        "subjectId": "SUB_WT",
+        "level": "preferred"
+      },
+      {
+        "subjectId": "SUB_UP",
+        "level": "preferred"
+      },
+      {
+        "subjectId": "SUB_UP",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_017",
+    "name": "K. Prasannalatha",
+    "empId": "CSE017",
+    "email": "kprasannalatha@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_SE",
+        "level": "Expert"
+      },
+      {
+        "subjectId": "SUB_CT_LAB",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_SE",
+        "level": "preferred"
+      },
+      {
+        "subjectId": "SUB_CT_LAB",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_018",
+    "name": "M. Jyothirmay",
+    "empId": "CSE018",
+    "email": "mjyothirmay@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_DLCO",
+        "level": "Expert"
+      },
+      {
+        "subjectId": "SUB_FSD",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_DLCO",
+        "level": "preferred"
+      },
+      {
+        "subjectId": "SUB_FSD",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_019",
+    "name": "M. Suchitra",
+    "empId": "CSE019",
+    "email": "msuchitra@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [],
+    "preferences": [],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_020",
+    "name": "Mr. A. S. N. Varma",
+    "empId": "CSE020",
+    "email": "mrasnvarma@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [],
+    "preferences": [],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_021",
+    "name": "Mr. A.V.V. Chakrapani",
+    "empId": "CSE021",
+    "email": "mravvchakrapani@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_JAVA",
+        "level": "Expert"
+      },
+      {
+        "subjectId": "SUB_JAVA",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_JAVA",
+        "level": "preferred"
+      },
+      {
+        "subjectId": "SUB_JAVA",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_022",
+    "name": "Mr. B. Ashok Kumar",
+    "empId": "CSE022",
+    "email": "mrbashokkumar@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [],
+    "preferences": [],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_023",
+    "name": "Mr. Guvvada Nagaraju",
+    "empId": "CSE023",
+    "email": "mrguvvadanagaraju@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_FSD",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_FSD",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_024",
+    "name": "Mr. K. Ramappala Naidu",
+    "empId": "CSE024",
+    "email": "mrkramappalanaidu@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_MFCS",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_MFCS",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_025",
+    "name": "Mr. P. Adithya",
+    "empId": "CSE025",
+    "email": "mrpadithya@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_FSD",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_FSD",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_026",
+    "name": "Mr. P. Siva Kumar",
+    "empId": "CSE026",
+    "email": "mrpsivakumar@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [],
+    "preferences": [],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_027",
+    "name": "Mr. VVRL Sastry",
+    "empId": "CSE027",
+    "email": "mrvvrlsastry@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_SE",
+        "level": "Expert"
+      },
+      {
+        "subjectId": "SUB_CT_LAB",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_SE",
+        "level": "preferred"
+      },
+      {
+        "subjectId": "SUB_CT_LAB",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_028",
+    "name": "Mr. Y. Hari Krishna",
+    "empId": "CSE028",
+    "email": "mryharikrishna@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_JAVA",
+        "level": "Expert"
+      },
+      {
+        "subjectId": "SUB_JAVA",
+        "level": "Expert"
+      },
+      {
+        "subjectId": "SUB_LCS",
+        "level": "Expert"
+      },
+      {
+        "subjectId": "SUB_WT",
+        "level": "Expert"
+      },
+      {
+        "subjectId": "SUB_UP",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_JAVA",
+        "level": "preferred"
+      },
+      {
+        "subjectId": "SUB_JAVA",
+        "level": "preferred"
+      },
+      {
+        "subjectId": "SUB_LCS",
+        "level": "preferred"
+      },
+      {
+        "subjectId": "SUB_WT",
+        "level": "preferred"
+      },
+      {
+        "subjectId": "SUB_UP",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_029",
+    "name": "Mr. Yogesh",
+    "empId": "CSE029",
+    "email": "mryogesh@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_ES",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_ES",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_030",
+    "name": "Mrs. A. Priyanka Devi",
+    "empId": "CSE030",
+    "email": "mrsapriyankadevi@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_FSD",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_FSD",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_031",
+    "name": "Mrs. A. Usha Rani",
+    "empId": "CSE031",
+    "email": "mrsausharani@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [],
+    "preferences": [],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_032",
+    "name": "Mrs. G. Kumari",
+    "empId": "CSE032",
+    "email": "mrsgkumari@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [],
+    "preferences": [],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_033",
+    "name": "Mrs. Gottumukkala Jyothi",
+    "empId": "CSE033",
+    "email": "mrsgottumukkalajyothi@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_MFCS",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_MFCS",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_034",
+    "name": "Mrs. J. Priyanka",
+    "empId": "CSE034",
+    "email": "mrsjpriyanka@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_JAVA",
+        "level": "Expert"
+      },
+      {
+        "subjectId": "SUB_JAVA",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_JAVA",
+        "level": "preferred"
+      },
+      {
+        "subjectId": "SUB_JAVA",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_035",
+    "name": "Mrs. K. Visala",
+    "empId": "CSE035",
+    "email": "mrskvisala@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_FSD",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_FSD",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_036",
+    "name": "Mrs. Nekkanti Renu",
+    "empId": "CSE036",
+    "email": "mrsnekkantirenu@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_FSD",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_FSD",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_037",
+    "name": "Mrs. P. M. L. Mounika",
+    "empId": "CSE037",
+    "email": "mrspmlmounika@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [],
+    "preferences": [],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_038",
+    "name": "Mrs. P. Pratima Rani",
+    "empId": "CSE038",
+    "email": "mrsppratimarani@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [],
+    "preferences": [],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_039",
+    "name": "Mrs. P. Vani Manikayam",
+    "empId": "CSE039",
+    "email": "mrspvanimanikayam@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_DLCO",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_DLCO",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_040",
+    "name": "Mrs. Rajeswari",
+    "empId": "CSE040",
+    "email": "mrsrajeswari@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_UP",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_UP",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_041",
+    "name": "Mrs. Shalini Bharide",
+    "empId": "CSE041",
+    "email": "mrsshalinibharide@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_FSD",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_FSD",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_042",
+    "name": "Mrs. Sravani",
+    "empId": "CSE042",
+    "email": "mrssravani@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_FSD",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_FSD",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_043",
+    "name": "Mrs. Sushri Sangeetha Sahoo",
+    "empId": "CSE043",
+    "email": "mrssushrisangeethasahoo@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [],
+    "preferences": [],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_044",
+    "name": "Mrs. T. Keerthana",
+    "empId": "CSE044",
+    "email": "mrstkeerthana@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_FSD",
+        "level": "Expert"
+      },
+      {
+        "subjectId": "SUB_JAVA",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_FSD",
+        "level": "preferred"
+      },
+      {
+        "subjectId": "SUB_JAVA",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_045",
+    "name": "Mrs. Y. Aswani",
+    "empId": "CSE045",
+    "email": "mrsyaswani@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [],
+    "preferences": [],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_046",
+    "name": "Mrs. Y. Hari Krishna",
+    "empId": "CSE046",
+    "email": "mrsyharikrishna@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_UP",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_UP",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_047",
+    "name": "Mrs. Y. Srilatha",
+    "empId": "CSE047",
+    "email": "mrsysrilatha@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [],
+    "preferences": [],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_048",
+    "name": "Ms. A. Tejaswi",
+    "empId": "CSE048",
+    "email": "msatejaswi@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_UHV",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_UHV",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_049",
+    "name": "Ms. B. Jayasi",
+    "empId": "CSE049",
+    "email": "msbjayasi@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_UHV",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_UHV",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_050",
+    "name": "Ms. G. Bhagvasi / G. Bhargavi",
+    "empId": "CSE050",
+    "email": "msgbhagvasigbhargavi@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_MFCS",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_MFCS",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_051",
+    "name": "Ms. G. Jyothi",
+    "empId": "CSE051",
+    "email": "msgjyothi@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_MFCS",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_MFCS",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_052",
+    "name": "Ms. Goketi Pranathi",
+    "empId": "CSE052",
+    "email": "msgoketipranathi@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_SE",
+        "level": "Expert"
+      },
+      {
+        "subjectId": "SUB_CT_LAB",
+        "level": "Expert"
+      },
+      {
+        "subjectId": "SUB_LCS",
+        "level": "Expert"
+      },
+      {
+        "subjectId": "SUB_WT",
+        "level": "Expert"
+      },
+      {
+        "subjectId": "SUB_UP",
+        "level": "Expert"
+      },
+      {
+        "subjectId": "SUB_UP",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_SE",
+        "level": "preferred"
+      },
+      {
+        "subjectId": "SUB_CT_LAB",
+        "level": "preferred"
+      },
+      {
+        "subjectId": "SUB_LCS",
+        "level": "preferred"
+      },
+      {
+        "subjectId": "SUB_WT",
+        "level": "preferred"
+      },
+      {
+        "subjectId": "SUB_UP",
+        "level": "preferred"
+      },
+      {
+        "subjectId": "SUB_UP",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_053",
+    "name": "Ms. M. Divya Sri",
+    "empId": "CSE053",
+    "email": "msmdivyasri@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [],
+    "preferences": [],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_054",
+    "name": "Ms. M. Yoga Swarna",
+    "empId": "CSE054",
+    "email": "msmyogaswarna@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [],
+    "preferences": [],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_055",
+    "name": "Narava Jaya Lalitha",
+    "empId": "CSE055",
+    "email": "naravajayalalitha@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_MFCS",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_MFCS",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_056",
+    "name": "Rajeswari Modhalavalasa",
+    "empId": "CSE056",
+    "email": "rajeswarimodhalavalasa@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [
+      {
+        "subjectId": "SUB_DLCO",
+        "level": "Expert"
+      },
+      {
+        "subjectId": "SUB_LCS",
+        "level": "Expert"
+      },
+      {
+        "subjectId": "SUB_WT",
+        "level": "Expert"
+      },
+      {
+        "subjectId": "SUB_UP",
+        "level": "Expert"
+      }
+    ],
+    "preferences": [
+      {
+        "subjectId": "SUB_DLCO",
+        "level": "preferred"
+      },
+      {
+        "subjectId": "SUB_LCS",
+        "level": "preferred"
+      },
+      {
+        "subjectId": "SUB_WT",
+        "level": "preferred"
+      },
+      {
+        "subjectId": "SUB_UP",
+        "level": "preferred"
+      }
+    ],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  },
+  {
+    "id": "FAC_057",
+    "name": "U. V. Roshini",
+    "empId": "CSE057",
+    "email": "uvroshini@college.edu",
+    "phone": "9876543210",
+    "designation": "Assistant Professor",
+    "department": "DEPT_CSE",
+    "status": "ACTIVE",
+    "photo": null,
+    "qualification": "M.Tech",
+    "specialization": "Computer Science",
+    "skills": [],
+    "preferences": [],
+    "availability": {
+      "Monday": "full",
+      "Tuesday": "full",
+      "Wednesday": "full",
+      "Thursday": "full",
+      "Friday": "full",
+      "Saturday": "full"
+    },
+    "responsibilities": {
+      "theoryHours": 0,
+      "labHours": 0,
+      "projectHours": 0,
+      "examHours": 0,
+      "mentoringHours": 0,
+      "deptHours": 0
+    },
+    "joinDate": "2020-01-01"
+  }
 ];
 
-// ─── Subjects ─────────────────────────────────────────────────
-export const SUBJECTS = [
-  { id: 'SUB_DBMS', name: 'Database Management Systems', code: 'CS301', type: 'THEORY', credits: 4, hoursPerWeek: 4, difficulty: 'High', requiredSkill: 'SUB_DBMS', semesterId: 'SEM_1', deptId: 'DEPT_CSE' },
-  { id: 'SUB_DS',   name: 'Data Structures',            code: 'CS302', type: 'THEORY', credits: 4, hoursPerWeek: 4, difficulty: 'High', requiredSkill: 'SUB_DS',   semesterId: 'SEM_1', deptId: 'DEPT_CSE' },
-  { id: 'SUB_OS',   name: 'Operating Systems',          code: 'CS303', type: 'THEORY', credits: 3, hoursPerWeek: 3, difficulty: 'High', requiredSkill: 'SUB_OS',   semesterId: 'SEM_1', deptId: 'DEPT_CSE' },
-  { id: 'SUB_COA',  name: 'Computer Organization',      code: 'CS304', type: 'THEORY', credits: 3, hoursPerWeek: 3, difficulty: 'Medium', requiredSkill: 'SUB_COA', semesterId: 'SEM_1', deptId: 'DEPT_CSE' },
-  { id: 'SUB_SE',   name: 'Software Engineering',       code: 'CS305', type: 'THEORY', credits: 3, hoursPerWeek: 3, difficulty: 'Medium', requiredSkill: 'SUB_SE',  semesterId: 'SEM_1', deptId: 'DEPT_CSE' },
-  { id: 'SUB_CN',   name: 'Computer Networks',          code: 'CS306', type: 'THEORY', credits: 3, hoursPerWeek: 3, difficulty: 'Medium', requiredSkill: 'SUB_CN',  semesterId: 'SEM_1', deptId: 'DEPT_CSE' },
-  { id: 'SUB_ADA',  name: 'Algorithm Design & Analysis',code: 'CS307', type: 'THEORY', credits: 3, hoursPerWeek: 3, difficulty: 'High', requiredSkill: 'SUB_ADA',  semesterId: 'SEM_1', deptId: 'DEPT_CSE' },
-  { id: 'SUB_TOC',  name: 'Theory of Computation',      code: 'CS308', type: 'THEORY', credits: 3, hoursPerWeek: 3, difficulty: 'High', requiredSkill: 'SUB_TOC',  semesterId: 'SEM_1', deptId: 'DEPT_CSE' },
-  { id: 'SUB_AI',   name: 'Artificial Intelligence',    code: 'CS401', type: 'THEORY', credits: 3, hoursPerWeek: 3, difficulty: 'High', requiredSkill: 'SUB_AI',   semesterId: 'SEM_1', deptId: 'DEPT_CSE' },
-  { id: 'SUB_ML',   name: 'Machine Learning',           code: 'CS402', type: 'THEORY', credits: 3, hoursPerWeek: 3, difficulty: 'High', requiredSkill: 'SUB_ML',   semesterId: 'SEM_1', deptId: 'DEPT_CSE' },
-  { id: 'SUB_WT',   name: 'Web Technologies',           code: 'CS309', type: 'THEORY', credits: 2, hoursPerWeek: 2, difficulty: 'Low', requiredSkill: 'SUB_WT',    semesterId: 'SEM_1', deptId: 'DEPT_CSE' },
-  { id: 'SUB_PYTHON',name: 'Python Programming',        code: 'CS310', type: 'THEORY', credits: 2, hoursPerWeek: 2, difficulty: 'Low', requiredSkill: 'SUB_PYTHON', semesterId: 'SEM_1', deptId: 'DEPT_CSE' },
-  // Labs
-  { id: 'SUB_DBMS_LAB', name: 'DBMS Lab',    code: 'CS301L', type: 'LAB', credits: 2, hoursPerWeek: 2, difficulty: 'High', requiredSkill: 'SUB_DBMS', semesterId: 'SEM_1', deptId: 'DEPT_CSE', linkedTheory: 'SUB_DBMS' },
-  { id: 'SUB_DS_LAB',   name: 'DS Lab',      code: 'CS302L', type: 'LAB', credits: 2, hoursPerWeek: 2, difficulty: 'High', requiredSkill: 'SUB_DS',   semesterId: 'SEM_1', deptId: 'DEPT_CSE', linkedTheory: 'SUB_DS' },
-  { id: 'SUB_CN_LAB',   name: 'Networks Lab',code: 'CS306L', type: 'LAB', credits: 2, hoursPerWeek: 2, difficulty: 'Medium', requiredSkill: 'SUB_CN', semesterId: 'SEM_1', deptId: 'DEPT_CSE', linkedTheory: 'SUB_CN' },
-  { id: 'SUB_PYTHON_LAB',name: 'Python Lab', code: 'CS310L', type: 'LAB', credits: 1, hoursPerWeek: 2, difficulty: 'Low', requiredSkill: 'SUB_PYTHON', semesterId: 'SEM_1', deptId: 'DEPT_CSE', linkedTheory: 'SUB_PYTHON' },
+export const MOCK_SECTIONS = [
+  {
+    "id": "SEC_CSE_2_1_A",
+    "label": "CSE-1",
+    "year": 2,
+    "semester": 1,
+    "department": "DEPT_CSE",
+    "studentCount": 60,
+    "status": "ACTIVE"
+  },
+  {
+    "id": "SEC_CSE_2_1_B",
+    "label": "CSE-2",
+    "year": 2,
+    "semester": 1,
+    "department": "DEPT_CSE",
+    "studentCount": 60,
+    "status": "ACTIVE"
+  },
+  {
+    "id": "SEC_CSE_2_1_C",
+    "label": "CSE-3",
+    "year": 2,
+    "semester": 1,
+    "department": "DEPT_CSE",
+    "studentCount": 60,
+    "status": "ACTIVE"
+  },
+  {
+    "id": "SEC_CSE_2_1_D",
+    "label": "CSE-4",
+    "year": 2,
+    "semester": 1,
+    "department": "DEPT_CSE",
+    "studentCount": 60,
+    "status": "ACTIVE"
+  }
 ];
 
-// ─── Section-Subject Assignments (which subjects each section has) ─
-export const SECTION_SUBJECTS = {
-  'SEC_CSE_2A': ['SUB_DBMS', 'SUB_DS', 'SUB_OS', 'SUB_COA', 'SUB_SE', 'SUB_DBMS_LAB', 'SUB_DS_LAB'],
-  'SEC_CSE_2B': ['SUB_DBMS', 'SUB_DS', 'SUB_OS', 'SUB_COA', 'SUB_SE', 'SUB_DBMS_LAB', 'SUB_DS_LAB'],
-  'SEC_CSE_3A': ['SUB_AI', 'SUB_ML', 'SUB_CN', 'SUB_ADA', 'SUB_TOC', 'SUB_CN_LAB'],
-  'SEC_IT_2A':  ['SUB_CN', 'SUB_WT', 'SUB_PYTHON', 'SUB_SE', 'SUB_CN_LAB', 'SUB_PYTHON_LAB'],
+export const MOCK_DEPARTMENTS = [
+  { id: 'DEPT_CSE', code: 'CSE', name: 'Computer Science and Engineering' },
+  { id: 'DEPT_ECE', code: 'ECE', name: 'Electronics and Communication Engineering' },
+];
+
+export const MOCK_TIMETABLE_GRIDS = {
+  SEC_CSE_2_1_A: {},
+  SEC_CSE_2_1_B: {},
+  SEC_CSE_2_1_C: {},
+  SEC_CSE_2_1_D: {}
 };
 
-// ─── Timetable Grids (Phase status per section) ───────────────
-export const TIMETABLE_PHASES_STATE = {
-  'SEC_CSE_2A': 'PHASE2_IN_PROGRESS',
-  'SEC_CSE_2B': 'PHASE1_DRAFT',
-  'SEC_CSE_3A': 'PUBLISHED',
-  'SEC_IT_2A':  'PHASE1_DRAFT',
-};
-
-// ─── Faculty Assignments (Phase 2 — subject to faculty) ───────
-export const FACULTY_ASSIGNMENTS = [
-  // CSE-2A
-  { id: 'ASN_001', sectionId: 'SEC_CSE_2A', subjectId: 'SUB_DBMS', facultyId: 'FAC_001', type: 'THEORY' },
-  { id: 'ASN_002', sectionId: 'SEC_CSE_2A', subjectId: 'SUB_DS',   facultyId: 'FAC_002', type: 'THEORY' },
-  { id: 'ASN_003', sectionId: 'SEC_CSE_2A', subjectId: 'SUB_OS',   facultyId: 'FAC_003', type: 'THEORY' },
-  { id: 'ASN_004', sectionId: 'SEC_CSE_2A', subjectId: 'SUB_COA',  facultyId: 'FAC_006', type: 'THEORY' },
-  { id: 'ASN_005', sectionId: 'SEC_CSE_2A', subjectId: 'SUB_SE',   facultyId: 'FAC_005', type: 'THEORY' },
-  { id: 'ASN_006', sectionId: 'SEC_CSE_2A', subjectId: 'SUB_DBMS_LAB', facultyId: 'FAC_001', type: 'LAB', coFacultyId: null },
-  { id: 'ASN_007', sectionId: 'SEC_CSE_2A', subjectId: 'SUB_DS_LAB',   facultyId: 'FAC_002', type: 'LAB', coFacultyId: null },
-  // CSE-3A (Published)
-  { id: 'ASN_010', sectionId: 'SEC_CSE_3A', subjectId: 'SUB_AI',   facultyId: 'FAC_004', type: 'THEORY' },
-  { id: 'ASN_011', sectionId: 'SEC_CSE_3A', subjectId: 'SUB_ML',   facultyId: 'FAC_004', type: 'THEORY' },
-  { id: 'ASN_012', sectionId: 'SEC_CSE_3A', subjectId: 'SUB_CN',   facultyId: 'FAC_003', type: 'THEORY' },
-  { id: 'ASN_013', sectionId: 'SEC_CSE_3A', subjectId: 'SUB_ADA',  facultyId: 'FAC_002', type: 'THEORY' },
-  { id: 'ASN_014', sectionId: 'SEC_CSE_3A', subjectId: 'SUB_TOC',  facultyId: 'FAC_001', type: 'THEORY' },
-  { id: 'ASN_015', sectionId: 'SEC_CSE_3A', subjectId: 'SUB_CN_LAB', facultyId: 'FAC_003', type: 'LAB' },
-];
-
-// ─── Absence Intimations ──────────────────────────────────────
-export const ABSENCES = [
-  {
-    id: 'ABS_001',
-    facultyId: 'FAC_003',
-    facultyName: 'Mr. Rahul Sharma',
-    fromDate: '2026-08-18',
-    toDate: '2026-08-20',
-    reason: 'Family medical emergency',
-    note: 'Will be back by Monday 21st',
-    status: 'PENDING_HOD',
-    submittedAt: '2026-08-12T10:30:00',
-    affectedClasses: [
-      { sectionId: 'SEC_CSE_2A', subjectId: 'SUB_OS' },
-      { sectionId: 'SEC_CSE_3A', subjectId: 'SUB_CN' },
-      { sectionId: 'SEC_CSE_3A', subjectId: 'SUB_CN_LAB' },
-    ],
-    recommendations: [
-      { subjectId: 'SUB_OS', sectionId: 'SEC_CSE_2A', replacementFacultyId: 'FAC_006', suitabilityScore: 72 },
-      { subjectId: 'SUB_CN', sectionId: 'SEC_CSE_3A', replacementFacultyId: 'FAC_009', suitabilityScore: 81 },
-      { subjectId: 'SUB_CN_LAB', sectionId: 'SEC_CSE_3A', replacementFacultyId: 'FAC_009', suitabilityScore: 78 },
-    ],
-    assistantHodAction: { action: 'RECOMMENDED', comment: 'Dr. Rahul has a valid reason. Replacements verified.', at: '2026-08-12T14:15:00' },
-    hodAction: null,
-  },
-];
-
-// ─── Notifications ────────────────────────────────────────────
-export const NOTIFICATIONS = [
-  { id: 'NOT_001', userId: 'FAC_003', type: 'ABSENCE', title: 'Absence Under Review', message: 'Your absence intimation for Aug 18–20 is under HOD review.', read: false, createdAt: '2026-08-12T14:15:00' },
-  { id: 'NOT_002', userId: 'FAC_001', type: 'WORKLOAD', title: 'Workload Updated', message: 'Your workload has been updated for Semester 1.', read: true, createdAt: '2026-08-10T09:00:00' },
-  { id: 'NOT_003', userId: 'HOD_001', type: 'APPROVAL', title: 'New Absence Request', message: 'Faculty absence intimation from Mr. Rahul Sharma awaits your approval.', read: false, createdAt: '2026-08-12T14:15:00' },
-  { id: 'NOT_004', userId: 'HOD_001', type: 'WORKLOAD', title: 'Workload Imbalance Detected', message: 'Workload imbalance detected: Dr. Sunita Rao is overloaded (110%).', read: false, createdAt: '2026-08-11T11:00:00' },
-  { id: 'NOT_005', userId: 'ASST_001', type: 'REQUEST', title: 'New Absence Intimation', message: 'New absence intimation received from Mr. Rahul Sharma.', read: false, createdAt: '2026-08-12T10:30:00' },
-];
-
-// ─── Audit Log ────────────────────────────────────────────────
-export const AUDIT_LOG = [
-  { id: 'AUD_001', userId: 'HOD_001', userName: 'Dr. A. Krishnaswamy (HOD)', action: 'SEMESTER_CREATED', entity: 'Semester', entityId: 'SEM_1', detail: 'Created Semester 1 (2026-27)', timestamp: '2026-07-01T09:00:00' },
-  { id: 'AUD_002', userId: 'HOD_001', userName: 'Dr. A. Krishnaswamy (HOD)', action: 'TIMETABLE_PHASE1_LOCKED', entity: 'Timetable', entityId: 'SEC_CSE_3A', detail: 'Phase 1 locked for CSE-3A', timestamp: '2026-07-10T11:00:00' },
-  { id: 'AUD_003', userId: 'ASST_001', userName: 'Mrs. Lakshmi (Asst. HOD)', action: 'FACULTY_ASSIGNED', entity: 'Assignment', entityId: 'ASN_010', detail: 'Dr. Sunita Rao assigned to AI for CSE-3A', timestamp: '2026-07-15T10:30:00' },
-  { id: 'AUD_004', userId: 'HOD_001', userName: 'Dr. A. Krishnaswamy (HOD)', action: 'TIMETABLE_PUBLISHED', entity: 'Timetable', entityId: 'SEC_CSE_3A', detail: 'CSE-3A timetable published', timestamp: '2026-07-20T15:00:00' },
-  { id: 'AUD_005', userId: 'FAC_003', userName: 'Mr. Rahul Sharma', action: 'ABSENCE_SUBMITTED', entity: 'Absence', entityId: 'ABS_001', detail: 'Absence intimation for Aug 18–20 submitted', timestamp: '2026-08-12T10:30:00' },
-  { id: 'AUD_006', userId: 'ASST_001', userName: 'Mrs. Lakshmi (Asst. HOD)', action: 'ABSENCE_REVIEWED', entity: 'Absence', entityId: 'ABS_001', detail: 'Asst HOD recommended approval with replacement', timestamp: '2026-08-12T14:15:00' },
-];
-
-// ─── Users (for auth) ─────────────────────────────────────────
-export const USERS = [
-  { id: 'HOD_001', name: 'Dr. A. Krishnaswamy', email: 'hod@college.edu', password: 'hod123', role: 'HOD', facultyId: null },
-  { id: 'ASST_001', name: 'Mrs. Lakshmi Iyer', email: 'asst.hod@college.edu', password: 'asst123', role: 'ASST_HOD', facultyId: null },
-  { id: 'FAC_001_U', name: 'Dr. Arjun Mehta', email: 'arjun.mehta@college.edu', password: 'fac123', role: 'FACULTY', facultyId: 'FAC_001' },
-  { id: 'FAC_002_U', name: 'Dr. Priya Krishnan', email: 'priya.krishnan@college.edu', password: 'fac123', role: 'FACULTY', facultyId: 'FAC_002' },
-  { id: 'FAC_003_U', name: 'Mr. Rahul Sharma', email: 'rahul.sharma@college.edu', password: 'fac123', role: 'FACULTY', facultyId: 'FAC_003' },
-];
-
-// ─── System Settings ──────────────────────────────────────────
-export const DEFAULT_SETTINGS = {
-  institutionName: "Vignan's Institute Of Information Technology",
-  departmentName: 'Department of Computer Science & Engineering',
-  workloadWeights: {
-    theory: 1.0, laboratory: 1.2, projectGuidance: 1.3,
-    examination: 1.5, mentoring: 0.8, departmentWork: 0.5,
-  },
-  workloadThresholds: { overloaded: 100, balancedMin: 70, balancedMax: 100 },
-  designationLimits: {
-    'Professor': 10,
-    'Associate Professor': 16,
-    'Assistant Professor': 20,
-  },
+export const MOCK_TIMETABLE_PHASES = {
+  SEC_CSE_2_1_A: 'PUBLISHED',
+  SEC_CSE_2_1_B: 'NOT_STARTED',
+  SEC_CSE_2_1_C: 'NOT_STARTED',
+  SEC_CSE_2_1_D: 'NOT_STARTED'
 };

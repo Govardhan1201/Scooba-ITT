@@ -1,9 +1,9 @@
-﻿import React, { useMemo } from "react";
+import React, { useMemo } from "react";
 import { useApp, ACTIONS } from "../../context/AppContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "../../lib/utils";
 import { buildReplacementPlan, getAffectedDayNames, findAffectedClasses } from "../../engine/absence";
-import { CheckCircle, XCircle, AlertTriangle, Clock, User, BookOpen, Calendar, ChevronDown, ChevronUp, Star } from "lucide-react";
+import { CheckCircle, XCircle, AlertTriangle, Clock, User, BookOpen, Calendar, ChevronDown, ChevronUp, Star, Save } from "lucide-react";
 
 const STATUS_LABELS = {
   PENDING_HOD: { label: "Pending Your Review", color: "text-yellow-400", bg: "bg-yellow-950/40", border: "border-yellow-900/50" },
@@ -163,20 +163,92 @@ function AbsenceCard({ absence }) {
   );
 }
 
+function ProposalCard({ proposal }) {
+  const { dispatch, showToast } = useApp();
+  const statusCfg = STATUS_LABELS[proposal.status] ?? STATUS_LABELS.PENDING_HOD;
+
+  const approve = () => {
+    dispatch({ type: ACTIONS.APPROVE_PROPOSAL, payload: proposal.id });
+    showToast(`Proposal for ${proposal.sectionLabel} approved. Timetable updated.`, 'success');
+  };
+
+  const reject = () => {
+    dispatch({ type: ACTIONS.REJECT_PROPOSAL, payload: proposal.id });
+    showToast(`Proposal rejected.`, 'error');
+  };
+
+  return (
+    <motion.div
+      layout initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+      className="glass-panel rounded-2xl border border-[var(--border)] overflow-hidden"
+    >
+      <div className="p-5 flex items-start gap-4">
+        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-900/30 to-blue-800/20 flex items-center justify-center shrink-0 border border-blue-500/20">
+          <Save className="w-6 h-6 text-blue-400" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-3 flex-wrap">
+            <h3 className="font-heading font-bold text-white">Timetable Edit: {proposal.sectionLabel}</h3>
+            <span className={cn("text-[10px] font-bold px-2.5 py-1 rounded-full border", statusCfg.bg, statusCfg.border, statusCfg.color)}>{statusCfg.label}</span>
+          </div>
+          <p className="text-xs text-[var(--text-secondary)] mt-1">Proposed by: {proposal.submittedBy}</p>
+          <div className="flex items-center gap-4 mt-2 text-xs text-[var(--text-muted)]">
+            <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> Submitted: {new Date(proposal.timestamp).toLocaleString()}</span>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          {proposal.status === "PENDING_HOD" && (
+            <>
+              <button onClick={approve} className="flex items-center gap-1.5 px-3 py-2 bg-[var(--primary)]/10 hover:bg-[var(--primary)]/20 text-[var(--primary)] border border-[var(--primary)]/20 rounded-lg text-xs font-bold transition-colors">
+                <CheckCircle className="w-3.5 h-3.5" /> Approve
+              </button>
+              <button onClick={reject} className="flex items-center gap-1.5 px-3 py-2 bg-red-950/30 hover:bg-red-950/50 text-red-400 border border-red-900/40 rounded-lg text-xs font-bold transition-colors">
+                <XCircle className="w-3.5 h-3.5" /> Reject
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 export default function HODApprovals() {
   const { state } = useApp();
+  const [activeTab, setActiveTab] = React.useState('absences'); // 'absences' | 'proposals'
+
   const pending = state.absences.filter(a => a.status === "PENDING_HOD");
   const approved = state.absences.filter(a => a.status === "APPROVED");
   const rejected = state.absences.filter(a => a.status === "REJECTED");
+
+  const pendingProps = state.timetableProposals?.filter(p => p.status === "PENDING_HOD") || [];
+  const handledProps = state.timetableProposals?.filter(p => p.status !== "PENDING_HOD") || [];
 
   return (
     <div className="p-6 md:p-8 space-y-8 max-w-5xl mx-auto">
       <div>
         <h1 className="text-2xl font-heading font-bold text-white">Approval Center</h1>
-        <p className="text-[var(--text-secondary)] mt-1">Review faculty absence requests and intelligent replacement suggestions</p>
+        <p className="text-[var(--text-secondary)] mt-1">Review faculty absence requests and timetable proposals</p>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="flex gap-4 border-b border-[var(--border)]">
+        <button
+          onClick={() => setActiveTab('absences')}
+          className={cn("pb-3 px-2 text-sm font-bold border-b-2 transition-colors", activeTab === 'absences' ? 'border-[var(--primary)] text-white' : 'border-transparent text-[var(--text-secondary)] hover:text-white')}
+        >
+          Absence Requests {pending.length > 0 && <span className="ml-2 bg-yellow-500 text-black px-1.5 py-0.5 rounded text-[10px]">{pending.length}</span>}
+        </button>
+        <button
+          onClick={() => setActiveTab('proposals')}
+          className={cn("pb-3 px-2 text-sm font-bold border-b-2 transition-colors", activeTab === 'proposals' ? 'border-[var(--primary)] text-white' : 'border-transparent text-[var(--text-secondary)] hover:text-white')}
+        >
+          Timetable Proposals {pendingProps.length > 0 && <span className="ml-2 bg-blue-500 text-white px-1.5 py-0.5 rounded text-[10px]">{pendingProps.length}</span>}
+        </button>
+      </div>
+
+      {activeTab === 'absences' ? (
+        <>
+          <div className="grid grid-cols-3 gap-4">
         {[
           { label: "Pending Review", value: pending.length, color: "text-yellow-400" },
           { label: "Approved", value: approved.length, color: "text-[var(--primary)]" },
@@ -219,6 +291,40 @@ export default function HODApprovals() {
           <h3 className="text-xl font-heading font-bold text-white mb-2">All Clear!</h3>
           <p className="text-[var(--text-secondary)]">No absence requests pending. Faculty absence intimations will appear here.</p>
         </div>
+      )}
+        </>
+      ) : (
+        <>
+          {pendingProps.length > 0 && (
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <Clock className="w-5 h-5 text-yellow-400" />
+                <h2 className="text-lg font-heading font-bold text-white">Pending Timetable Proposals ({pendingProps.length})</h2>
+              </div>
+              <div className="space-y-4">
+                {pendingProps.map(p => <ProposalCard key={p.id} proposal={p} />)}
+              </div>
+            </div>
+          )}
+          {handledProps.length > 0 && (
+            <div>
+              <div className="flex items-center gap-3 mb-4 mt-8">
+                <CheckCircle className="w-5 h-5 text-[var(--primary)]" />
+                <h2 className="text-lg font-heading font-bold text-white">Past Proposals</h2>
+              </div>
+              <div className="space-y-4">
+                {handledProps.map(p => <ProposalCard key={p.id} proposal={p} />)}
+              </div>
+            </div>
+          )}
+          {pendingProps.length === 0 && handledProps.length === 0 && (
+            <div className="glass-panel rounded-2xl border border-[var(--border)] p-16 text-center">
+              <CheckCircle className="w-12 h-12 text-blue-400 mx-auto mb-4" />
+              <h3 className="text-xl font-heading font-bold text-white mb-2">No Proposals</h3>
+              <p className="text-[var(--text-secondary)]">Assistant HODs have not submitted any timetable proposals.</p>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
