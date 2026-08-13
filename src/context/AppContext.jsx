@@ -66,6 +66,7 @@ export const ACTIONS = {
   // Sections
   ADD_SECTION: 'ADD_SECTION',
   UPDATE_SECTION: 'UPDATE_SECTION',
+  DELETE_SECTION: 'DELETE_SECTION',
 
   // Rooms
   ADD_ROOM: 'ADD_ROOM',
@@ -147,6 +148,8 @@ function appReducer(state, action) {
       return { ...state, sections: [...state.sections, action.payload] };
     case ACTIONS.UPDATE_SECTION:
       return { ...state, sections: state.sections.map((s) => s.id === action.payload.id ? { ...s, ...action.payload } : s) };
+    case ACTIONS.DELETE_SECTION:
+      return { ...state, sections: state.sections.filter((s) => s.id !== action.payload) };
 
     // Rooms
     case ACTIONS.ADD_ROOM:

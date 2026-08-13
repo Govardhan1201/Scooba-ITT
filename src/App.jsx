@@ -9,6 +9,7 @@ import TimetableBuilder from './pages/hod/TimetableBuilder';
 import HODApprovals from './pages/hod/Approvals';
 import WorkloadPage from './pages/hod/Workload';
 import OptimizationPage from './pages/hod/Optimization';
+import AcademicSetup from './pages/hod/AcademicSetup';
 
 // Pages - Faculty
 import FacultyDashboard from './pages/faculty/Dashboard';
@@ -43,6 +44,7 @@ function AppRoutes() {
         <Route path="timetable" element={<TimetableBuilder />} />
         <Route path="workload" element={<WorkloadPage />} />
         <Route path="optimization" element={<OptimizationPage />} />
+        <Route path="academic-setup" element={<AcademicSetup />} />
         <Route path="approvals" element={<HODApprovals />} />
         <Route path="*" element={<div className="p-8 text-[var(--text-secondary)] text-center"><p className="text-2xl font-heading font-bold text-white mb-2">Coming Soon</p><p>This section is under active development.</p></div>} />
       </Route>
@@ -57,6 +59,7 @@ function AppRoutes() {
         <Route path="timetable" element={<TimetableBuilder />} />
         <Route path="workload" element={<WorkloadPage />} />
         <Route path="optimization" element={<OptimizationPage />} />
+        <Route path="academic-setup" element={<AcademicSetup />} />
         <Route path="approvals" element={<HODApprovals />} />
         <Route path="*" element={<div className="p-8 text-[var(--text-secondary)] text-center"><p className="text-2xl font-heading font-bold text-white mb-2">Coming Soon</p></div>} />
       </Route>
