@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useApp, ACTIONS } from '../../context/AppContext';
-import { DAYS, DAYS_SHORT, TEACHING_SLOTS, slotKey, autoSuggestPlacement, detectCollisions, PHASE_LABELS } from '../../engine/timetable';
+import { DAYS, DAYS_SHORT, TEACHING_SLOTS, TIME_SLOTS, slotKey, autoSuggestPlacement, detectCollisions, PHASE_LABELS, checkPhase1Complete, checkPhase2Complete } from '../../engine/timetable';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../../lib/utils';
-import { 
-  Lock, Unlock, RefreshCw, Save, X, GripVertical, AlertCircle, Play
-} from 'lucide-react';
+import { Lock, Unlock, RefreshCw, Save, X, GripVertical, AlertCircle, Play, Users, Wand2 } from 'lucide-react';
+import { getSkillMatchScore } from '../../engine/suitability';
+import { getFacultyWorkloadProfile } from '../../engine/workload';
 
 export default function TimetableBuilder() {
   const { state, dispatch, showToast } = useApp();
@@ -47,9 +47,9 @@ export default function TimetableBuilder() {
     }
   };
 
-  const handleDragStart = (e, subject) => {
+  const handleDragStart = (e, subject, sourceKey = null) => {
     if (phase === 'PHASE2_IN_PROGRESS' || phase === 'PUBLISHED') return;
-    setDraggedSubject(subject);
+    setDraggedSubject({ ...subject, sourceKey });
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData('text/plain', subject.id);
   };
@@ -59,13 +59,30 @@ export default function TimetableBuilder() {
     if (phase === 'PHASE2_IN_PROGRESS' || phase === 'PUBLISHED') return;
     if (!draggedSubject) return;
 
-    const key = slotKey(day, slotId);
+    const targetKey = slotKey(day, slotId);
+    const targetCell = grid[targetKey];
+    const sourceKey = draggedSubject.sourceKey;
+
+    // Swap if dropping onto existing
+    if (sourceKey && sourceKey !== targetKey && targetCell?.assignment) {
+       dispatch({
+         type: ACTIONS.UPDATE_TIMETABLE_SLOT,
+         payload: { sectionId: selectedSection, key: sourceKey, assignment: targetCell.assignment }
+       });
+    } else if (sourceKey && sourceKey !== targetKey) {
+       // Move to empty
+       dispatch({
+         type: ACTIONS.CLEAR_TIMETABLE_SLOT,
+         payload: { sectionId: selectedSection, key: sourceKey }
+       });
+    }
+
     dispatch({
       type: ACTIONS.UPDATE_TIMETABLE_SLOT,
       payload: { 
         sectionId: selectedSection, 
-        key, 
-        assignment: { subjectId: draggedSubject.id, type: draggedSubject.type } 
+        key: targetKey, 
+        assignment: { subjectId: draggedSubject.id, type: draggedSubject.type, facultyId: draggedSubject.facultyId, facultyId2: draggedSubject.facultyId2 } 
       }
     });
     setDraggedSubject(null);
@@ -85,6 +102,11 @@ export default function TimetableBuilder() {
   };
 
   const lockPhase1 = () => {
+    const { complete, missingHours } = checkPhase1Complete(grid, requiredSubjects);
+    if (!complete) {
+      showToast(`Phase 1 incomplete! Missing hours for: ${missingHours.map(m => m.subjectName).join(', ')}`, 'error');
+      return;
+    }
     dispatch({
       type: ACTIONS.SET_TIMETABLE_PHASE,
       payload: { sectionId: selectedSection, phase: 'PHASE2_IN_PROGRESS' }
@@ -93,6 +115,10 @@ export default function TimetableBuilder() {
   };
 
   const publishTimetable = () => {
+    if (!checkPhase2Complete(grid)) {
+      showToast('Cannot publish: Not all subjects have a primary faculty assigned.', 'error');
+      return;
+    }
     if (!confirm('Publish the official timetable for this section? This finalises all assignments.')) return;
     dispatch({ type: ACTIONS.PUBLISH_TIMETABLE, payload: selectedSection });
     dispatch({
@@ -108,7 +134,7 @@ export default function TimetableBuilder() {
   };
 
   const unlockPhase1 = () => {
-    if (confirm('Unlocking will clear all faculty assignments. Proceed?')) {
+    if (confirm('Unlock Phase 1? Your faculty assignments will remain intact, but you can swap subjects.')) {
       dispatch({
         type: ACTIONS.SET_TIMETABLE_PHASE,
         payload: { sectionId: selectedSection, phase: 'PHASE1_DRAFT' }
@@ -116,7 +142,58 @@ export default function TimetableBuilder() {
     }
   };
 
-  const assignFaculty = (key, facultyId) => {
+  const handleSmartAllocate = () => {
+    let assignmentsMade = 0;
+    const currentGrid = { ...grid };
+    
+    // Calculate current workloads for tracking
+    const facultyLoads = {};
+    state.faculty.forEach(f => {
+      const profile = getFacultyWorkloadProfile(f);
+      facultyLoads[f.id] = { current: profile.effectiveWorkload, max: profile.maxHours };
+    });
+
+    Object.entries(currentGrid).forEach(([key, cell]) => {
+      if (!cell?.assignment?.subjectId || cell.assignment.facultyId) return;
+      
+      const subject = state.subjects.find(s => s.id === cell.assignment.subjectId);
+      if (!subject) return;
+
+      const [day, slotId] = key.split('_');
+      
+      // Find eligible faculty
+      let bestFaculty = null;
+      let highestScore = -1;
+
+      for (const f of state.faculty) {
+        // Check collision
+        const collisions = detectCollisions(state.timetableGrids, f.id, day, isNaN(slotId) ? slotId : Number(slotId));
+        if (collisions.length > 0) continue;
+        
+        // Check workload limit
+        const hoursToAdd = subject.hoursPerWeek || 3;
+        if (facultyLoads[f.id].current + hoursToAdd > facultyLoads[f.id].max) continue;
+        
+        // Calculate score
+        const score = getSkillMatchScore(f, subject.id);
+        if (score > highestScore) {
+          highestScore = score;
+          bestFaculty = f;
+        }
+      }
+
+      if (bestFaculty) {
+        assignFaculty(key, bestFaculty.id);
+        facultyLoads[bestFaculty.id].current += (subject.hoursPerWeek || 3);
+        assignmentsMade++;
+      }
+    });
+
+    if (assignmentsMade > 0) showToast(`Smart Allocation assigned ${assignmentsMade} slots!`, 'success');
+    else showToast('Could not allocate any more slots due to constraints.', 'warning');
+  };
+
+  const assignFaculty = (key, facultyId, isSecondary = false) => {
     const cell = grid[key];
     if (!cell || !cell.assignment) return;
 
@@ -132,15 +209,27 @@ export default function TimetableBuilder() {
       }
     }
 
+    const assignmentUpdate = { ...cell.assignment };
+    if (isSecondary) assignmentUpdate.facultyId2 = facultyId;
+    else assignmentUpdate.facultyId = facultyId;
+
     dispatch({
       type: ACTIONS.UPDATE_TIMETABLE_SLOT,
-      payload: {
-        sectionId: selectedSection,
-        key,
-        assignment: { ...cell.assignment, facultyId }
-      }
+      payload: { sectionId: selectedSection, key, assignment: assignmentUpdate }
     });
     
+    // Auto-default for same subject in this section
+    if (facultyId && !isSecondary) {
+      Object.entries(grid).forEach(([gKey, gCell]) => {
+         if (gKey !== key && gCell?.assignment?.subjectId === cell.assignment.subjectId && !gCell.assignment.facultyId) {
+             dispatch({
+               type: ACTIONS.UPDATE_TIMETABLE_SLOT,
+               payload: { sectionId: selectedSection, key: gKey, assignment: { ...gCell.assignment, facultyId } }
+             });
+         }
+      });
+    }
+
     if (facultyId) showToast('Faculty Assigned', 'success', 2000);
   };
 
@@ -251,10 +340,13 @@ export default function TimetableBuilder() {
     return (
       <motion.div 
         layoutId={`cell-${key}`}
+        draggable={phase === 'PHASE1_DRAFT'}
+        onDragStart={(e) => handleDragStart(e, { id: subject.id, type: subject.type, facultyId: assignment.facultyId, facultyId2: assignment.facultyId2 }, key)}
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         className={cn(
           "relative h-full w-full min-h-[90px] p-2.5 rounded-xl border flex flex-col justify-between group shadow-sm transition-colors",
+          phase === 'PHASE1_DRAFT' && "cursor-grab active:cursor-grabbing",
           subject.type === 'LAB' 
             ? "bg-purple-900/10 border-purple-500/30 hover:border-purple-500/60" 
             : "bg-[var(--surface-2)] border-[var(--border-accent)] hover:border-[var(--primary)]/60"
@@ -277,27 +369,79 @@ export default function TimetableBuilder() {
         )}
 
         {(phase === 'PHASE2_IN_PROGRESS' || phase === 'PUBLISHED') && (
-          <div className="mt-2 pt-2 border-t border-[var(--border)]/50">
-            {faculty ? (
-              <div className="flex items-center justify-between gap-1 bg-[var(--surface-1)] rounded px-1.5 py-1 border border-[var(--primary)]/20 text-xs">
-                <span className="truncate text-[var(--primary-light)] font-semibold">{faculty.name}</span>
-                {phase === 'PHASE2_IN_PROGRESS' && (
-                  <button onClick={() => assignFaculty(key, null)} className="text-[var(--text-muted)] hover:text-red-400 shrink-0">
-                    <X className="w-3 h-3" />
-                  </button>
+          <div className="mt-2 pt-2 border-t border-[var(--border)]/50 space-y-1">
+            {/* Primary Faculty */}
+            <div className="group/dropdown relative">
+              {faculty ? (
+                <div className="flex items-center justify-between gap-1 bg-[var(--surface-1)] rounded px-1.5 py-1 border border-[var(--primary)]/20 text-xs">
+                  <span className="truncate text-[var(--primary-light)] font-semibold">{faculty.name}</span>
+                  {phase === 'PHASE2_IN_PROGRESS' && (
+                    <button onClick={() => assignFaculty(key, null)} className="text-[var(--text-muted)] hover:text-red-400 shrink-0">
+                      <X className="w-3 h-3" />
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <select 
+                  className="w-full text-[10px] bg-[var(--warning)]/10 border border-[var(--warning)]/30 rounded py-1 px-1 text-[var(--warning)] font-medium focus:outline-none appearance-none cursor-pointer"
+                  onChange={(e) => assignFaculty(key, e.target.value)}
+                  value=""
+                >
+                  <option value="" disabled>Primary Faculty...</option>
+                  {state.faculty.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
+                </select>
+              )}
+              {/* Hover Dropdown Override */}
+              {faculty && phase === 'PHASE2_IN_PROGRESS' && (
+                 <div className="absolute inset-0 opacity-0 group-hover/dropdown:opacity-100 transition-opacity z-20 bg-[var(--surface-1)] border border-[var(--primary)] rounded flex items-center">
+                   <select 
+                    className="w-full h-full text-[10px] bg-transparent text-[var(--primary-light)] font-medium focus:outline-none appearance-none cursor-pointer px-1"
+                    onChange={(e) => assignFaculty(key, e.target.value)}
+                    value={faculty.id}
+                   >
+                     {state.faculty.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
+                   </select>
+                 </div>
+              )}
+            </div>
+
+            {/* Secondary Faculty (LAB ONLY) */}
+            {subject.type === 'LAB' && (
+              <div className="group/dropdown2 relative">
+                {assignment.facultyId2 ? (
+                  <div className="flex items-center justify-between gap-1 bg-purple-900/20 rounded px-1.5 py-1 border border-purple-500/20 text-xs">
+                    <span className="truncate text-purple-300 font-semibold">{state.faculty.find(f => f.id === assignment.facultyId2)?.name}</span>
+                    {phase === 'PHASE2_IN_PROGRESS' && (
+                      <button onClick={() => assignFaculty(key, null, true)} className="text-[var(--text-muted)] hover:text-red-400 shrink-0">
+                        <X className="w-3 h-3" />
+                      </button>
+                    )}
+                  </div>
+                ) : (
+                  phase === 'PHASE2_IN_PROGRESS' && (
+                    <select 
+                      className="w-full text-[10px] bg-purple-900/10 border border-purple-500/30 rounded py-1 px-1 text-purple-300 font-medium focus:outline-none appearance-none cursor-pointer"
+                      onChange={(e) => assignFaculty(key, e.target.value, true)}
+                      value=""
+                    >
+                      <option value="" disabled>Secondary Faculty...</option>
+                      {state.faculty.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
+                    </select>
+                  )
+                )}
+                 {/* Hover Dropdown Override for Secondary */}
+                {assignment.facultyId2 && phase === 'PHASE2_IN_PROGRESS' && (
+                   <div className="absolute inset-0 opacity-0 group-hover/dropdown2:opacity-100 transition-opacity z-20 bg-[var(--surface-1)] border border-purple-500 rounded flex items-center">
+                     <select 
+                      className="w-full h-full text-[10px] bg-transparent text-purple-300 font-medium focus:outline-none appearance-none cursor-pointer px-1"
+                      onChange={(e) => assignFaculty(key, e.target.value, true)}
+                      value={assignment.facultyId2}
+                     >
+                       {state.faculty.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
+                     </select>
+                   </div>
                 )}
               </div>
-            ) : (
-              <select 
-                className="w-full text-xs bg-[var(--warning)]/10 border border-[var(--warning)]/30 rounded py-1 px-1 text-[var(--warning)] font-medium focus:outline-none focus:ring-1 focus:ring-[var(--warning)] appearance-none cursor-pointer"
-                onChange={(e) => assignFaculty(key, e.target.value)}
-                value=""
-              >
-                <option value="" disabled>Assign Faculty...</option>
-                {state.faculty.map(f => (
-                  <option key={f.id} value={f.id}>{f.name}</option>
-                ))}
-              </select>
             )}
           </div>
         )}
@@ -340,6 +484,9 @@ export default function TimetableBuilder() {
           )}
           {phase === 'PHASE2_IN_PROGRESS' && (
             <div className="flex gap-2">
+              <button onClick={handleSmartAllocate} className="btn bg-purple-500/10 text-purple-400 border border-purple-500/30 hover:bg-purple-500/20">
+                <Wand2 className="w-4 h-4" /> Smart Allocate
+              </button>
               <button onClick={unlockPhase1} className="btn btn-outline bg-[var(--surface-2)]">
                 <Unlock className="w-4 h-4" /> Unlock P1
               </button>
@@ -373,9 +520,12 @@ export default function TimetableBuilder() {
                 <th className="p-4 bg-[var(--surface-2)]/50 border-b border-r border-[var(--border)] w-24 text-center">
                   <div className="text-xs uppercase tracking-widest font-bold text-[var(--text-muted)]">Day</div>
                 </th>
-                {TEACHING_SLOTS.map(slot => (
-                  <th key={slot.id} className="p-3 bg-[var(--surface-2)]/50 border-b border-r border-[var(--border)] text-center w-[14%]">
-                    <div className="font-bold text-[var(--text-primary)] text-sm mb-0.5">Period {slot.period}</div>
+                {TIME_SLOTS.map(slot => (
+                  <th key={slot.id} className="p-3 bg-[var(--surface-2)]/50 border-b border-r border-[var(--border)] text-center w-[11%]">
+                    {slot.period 
+                      ? <div className="font-bold text-[var(--text-primary)] text-sm mb-0.5">Period {slot.period}</div>
+                      : <div className="font-bold text-[var(--warning)] text-sm mb-0.5">{slot.id}</div>
+                    }
                     <div className="text-[10px] text-[var(--primary-light)] font-mono bg-[var(--primary)]/10 inline-block px-1.5 py-0.5 rounded">{slot.label}</div>
                   </th>
                 ))}
@@ -387,9 +537,13 @@ export default function TimetableBuilder() {
                   <td className="p-4 bg-[var(--surface-2)]/30 group-hover:bg-[var(--surface-2)] border-b border-r border-[var(--border)] text-center transition-colors">
                     <span className="font-heading font-bold text-[var(--text-primary)] tracking-wide">{DAYS_SHORT[di]}</span>
                   </td>
-                  {TEACHING_SLOTS.map(slot => (
-                    <td key={slot.id} className="p-2 border-b border-r border-[var(--border)] bg-[var(--bg-main)]/50 align-top">
-                      {renderGridCell(day, slot)}
+                  {TIME_SLOTS.map(slot => (
+                    <td key={slot.id} className={cn("p-2 border-b border-r border-[var(--border)] align-top", slot.type !== 'NORMAL' ? 'bg-[var(--surface-3)]/30' : 'bg-[var(--bg-main)]/50')}>
+                      {slot.type === 'NORMAL' ? renderGridCell(day, slot) : (
+                         <div className="h-full flex items-center justify-center min-h-[90px]">
+                           <span className="text-xs font-bold text-[var(--text-muted)] tracking-widest uppercase rotate-[-90deg] whitespace-nowrap opacity-50">{slot.type}</span>
+                         </div>
+                      )}
                     </td>
                   ))}
                 </tr>

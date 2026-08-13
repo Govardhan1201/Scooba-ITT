@@ -1,0 +1,748 @@
+{
+  "Sheet1": [
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Subject Code",
+      "__EMPTY": "Full Form",
+      "__EMPTY_1": "Weekly Recurrence (approx.)"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "MFCS",
+      "__EMPTY": "Mathematical Foundations of Computer Science",
+      "__EMPTY_1": "4–5 periods"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "DLCO / DL&CO",
+      "__EMPTY": "Digital Logic & Computer Organization",
+      "__EMPTY_1": "4–5 periods"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "SE",
+      "__EMPTY": "Software Engineering",
+      "__EMPTY_1": "4–5 periods"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "JAVA / OOPS JAVA",
+      "__EMPTY": "Object Oriented Programming through JAVA",
+      "__EMPTY_1": "4–5 periods"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "UHV",
+      "__EMPTY": "Universal Human Values – Understanding Harmony and Ethical Conduct",
+      "__EMPTY_1": "2–3 periods"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "ES",
+      "__EMPTY": "Environmental Science",
+      "__EMPTY_1": "1–2 periods"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "JAVA LAB",
+      "__EMPTY": "Object Oriented Programming through JAVA Lab",
+      "__EMPTY_1": "1 session (3–4 periods) per week"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "CT Lab",
+      "__EMPTY": "CASE Tools Lab",
+      "__EMPTY_1": "1 session (3–4 periods) per week"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "FSD / FSD-I",
+      "__EMPTY": "Full Stack Development",
+      "__EMPTY_1": "1 session (3–4 periods) per week"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "WT",
+      "__EMPTY": "Weekly Test",
+      "__EMPTY_1": "1 period (usually Wednesday)"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "UP",
+      "__EMPTY": "Upskill / Upskilling",
+      "__EMPTY_1": "1–2 periods"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "LCS",
+      "__EMPTY": "Sports / Library / Counselling",
+      "__EMPTY_1": "1 period"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Table 2: Faculty Name – Subjects Handled (Consolidated)"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Faculty Name",
+      "__EMPTY": "Subject(s) Taught"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Dr. K. Niharika",
+      "__EMPTY": "MFCS"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Ms. G. Jyothi",
+      "__EMPTY": "MFCS"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Ms. G. Bhagvasi / G. Bhargavi",
+      "__EMPTY": "MFCS"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Narava Jaya Lalitha",
+      "__EMPTY": "MFCS"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Mr. K. Ramappala Naidu",
+      "__EMPTY": "MFCS"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Mrs. Gottumukkala Jyothi",
+      "__EMPTY": "MFCS"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Mrs. P. Vani Manikayam",
+      "__EMPTY": "DLCO"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "M. Jyothirmay",
+      "__EMPTY": "DLCO / FSD"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Rajeswari Modhalavalasa",
+      "__EMPTY": "DLCO / LCS / WT / UP (in some sections)"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Dr. K. Madhusudhana Rao",
+      "__EMPTY": "DLCO"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Mr. VVRL Sastry",
+      "__EMPTY": "SE / CT Lab"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Ch. Sridevi",
+      "__EMPTY": "SE / CT Lab"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "K. Prasannalatha",
+      "__EMPTY": "SE / CT Lab"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Ms. Goketi Pranathi",
+      "__EMPTY": "SE / CT Lab / LCS / WT / UP"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Mr. A.V.V. Chakrapani",
+      "__EMPTY": "JAVA / JAVA LAB"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Mrs. J. Priyanka",
+      "__EMPTY": "JAVA / JAVA LAB"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Gudepu Lavanya",
+      "__EMPTY": "JAVA / JAVA LAB / LCS / WT / UP"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Mr. Y. Hari Krishna",
+      "__EMPTY": "JAVA / JAVA LAB / LCS / WT / UP"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Dr. K. Sirisha",
+      "__EMPTY": "ES"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Mr. Yogesh",
+      "__EMPTY": "ES"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Ms. A. Tejaswi",
+      "__EMPTY": "UHV"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Ms. B. Jayasi",
+      "__EMPTY": "UHV"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Dr. R. Hanumantha Rao",
+      "__EMPTY": "UHV"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Chinta Meenakshi",
+      "__EMPTY": "UHV"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Mrs. Shalini Bharide",
+      "__EMPTY": "FSD"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Mrs. Sravani",
+      "__EMPTY": "FSD"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Mrs. T. Keerthana",
+      "__EMPTY": "FSD / JAVA LAB"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Mrs. Nekkanti Renu",
+      "__EMPTY": "FSD"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Mr. Guvvada Nagaraju",
+      "__EMPTY": "FSD"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Mrs. K. Visala",
+      "__EMPTY": "FSD"
+    },
+    {
+      "Table 1: Subjects – Full Forms & Weekly Recurrence": "Dr. S. Naga Mallik Raj",
+      "__EMPTY": "CT Lab"
+    }
+  ],
+  "Sheet2": [
+    {
+      "Code": "DWDM",
+      "Subject / Full Form": "Data Warehousing and Data Mining",
+      "Weekly Recurrence": "5 theory periods + 1 lab"
+    },
+    {
+      "Code": "CD",
+      "Subject / Full Form": "Compiler Design",
+      "Weekly Recurrence": "5 periods"
+    },
+    {
+      "Code": "ADSA",
+      "Subject / Full Form": "Advanced Data Structures and Algorithms",
+      "Weekly Recurrence": "5 theory periods + 1 lab"
+    },
+    {
+      "Code": "OOAD",
+      "Subject / Full Form": "Object-Oriented Analysis and Design",
+      "Weekly Recurrence": "5 periods"
+    },
+    {
+      "Code": "AOR",
+      "Subject / Full Form": "Full form not specified in the timetable",
+      "Weekly Recurrence": "5 periods"
+    },
+    {
+      "Code": "WT",
+      "Subject / Full Form": "Web Technologies",
+      "Weekly Recurrence": "1 session"
+    },
+    {
+      "Code": "FSD-II",
+      "Subject / Full Form": "Full Stack Development – II",
+      "Weekly Recurrence": "1 session"
+    },
+    {
+      "Code": "FLUTTER",
+      "Subject / Full Form": "Flutter",
+      "Weekly Recurrence": "1 session"
+    },
+    {
+      "Code": "COUN",
+      "Subject / Full Form": "Counselling",
+      "Weekly Recurrence": "1 session"
+    },
+    {
+      "Code": "SPORTS",
+      "Subject / Full Form": "Sports",
+      "Weekly Recurrence": "1 session"
+    },
+    {
+      "Code": "LIB",
+      "Subject / Full Form": "Library",
+      "Weekly Recurrence": "1 session"
+    },
+    {
+      "Code": "Mrs. P. Pratima Rani"
+    },
+    {
+      "Code": "→ DWDM"
+    },
+    {
+      "Code": "→ DWDM Lab"
+    },
+    {
+      "Code": "Mrs. Y. Srilatha"
+    },
+    {
+      "Code": "→ CD"
+    },
+    {
+      "Code": "→ DWDM Lab"
+    },
+    {
+      "Code": "Mrs. A. Usha Rani"
+    },
+    {
+      "Code": "→ ADSA"
+    },
+    {
+      "Code": "→ ADSA Lab"
+    },
+    {
+      "Code": "Mrs. Rajeswari"
+    },
+    {
+      "Code": "→ ADSA Lab"
+    },
+    {
+      "Code": "Dr. S. Nagamallik Raj"
+    },
+    {
+      "Code": "→ OOAD"
+    },
+    {
+      "Code": "Dr. B. Dhanuanjay"
+    },
+    {
+      "Code": "→ AOR"
+    },
+    {
+      "Code": "Mr. P. Adithya"
+    },
+    {
+      "Code": "→ FSD-II"
+    },
+    {
+      "Code": "Mrs. A. Priyanka Devi"
+    },
+    {
+      "Code": "→ FSD-II"
+    },
+    {
+      "Code": "→ Class Coordinator"
+    },
+    {
+      "Code": "Dr. Ch. Swapna Priya"
+    },
+    {
+      "Code": "→ Flutter"
+    }
+  ],
+  "Sheet3": [
+    {
+      ". Subjects, Full Forms & Weekly Recurrence": "Subject Code",
+      "__EMPTY": "Full Form / Subject Name",
+      "__EMPTY_1": "CSE-1",
+      "__EMPTY_2": "CSE-2",
+      "__EMPTY_3": "CSE-3",
+      "__EMPTY_4": "CSE-4"
+    },
+    {
+      ". Subjects, Full Forms & Weekly Recurrence": "ML",
+      "__EMPTY": "Machine Learning",
+      "__EMPTY_1": 5,
+      "__EMPTY_2": 5,
+      "__EMPTY_3": 5,
+      "__EMPTY_4": 5
+    },
+    {
+      ". Subjects, Full Forms & Weekly Recurrence": "HRPM",
+      "__EMPTY": "Human Resources & Project Management",
+      "__EMPTY_1": 3,
+      "__EMPTY_2": 3,
+      "__EMPTY_3": 3,
+      "__EMPTY_4": 3
+    },
+    {
+      ". Subjects, Full Forms & Weekly Recurrence": "QC",
+      "__EMPTY": "Quantum Computing",
+      "__EMPTY_1": 5,
+      "__EMPTY_2": 5,
+      "__EMPTY_3": 4,
+      "__EMPTY_4": 5
+    },
+    {
+      ". Subjects, Full Forms & Weekly Recurrence": "DL",
+      "__EMPTY": "Deep Learning / MOOCs",
+      "__EMPTY_1": 5,
+      "__EMPTY_2": 5,
+      "__EMPTY_3": 6,
+      "__EMPTY_4": 5
+    },
+    {
+      ". Subjects, Full Forms & Weekly Recurrence": "ES",
+      "__EMPTY": "Embedded System",
+      "__EMPTY_1": 5,
+      "__EMPTY_2": 6,
+      "__EMPTY_3": 5,
+      "__EMPTY_4": 5
+    },
+    {
+      ". Subjects, Full Forms & Weekly Recurrence": "DM",
+      "__EMPTY": "Disaster Management",
+      "__EMPTY_1": 5,
+      "__EMPTY_2": 5,
+      "__EMPTY_3": 5,
+      "__EMPTY_4": 5
+    },
+    {
+      ". Subjects, Full Forms & Weekly Recurrence": "PEL-LAB",
+      "__EMPTY": "Prompt Engineering Lab",
+      "__EMPTY_1": "1 lab session",
+      "__EMPTY_2": "1 lab session",
+      "__EMPTY_3": "1 lab session",
+      "__EMPTY_4": "1 lab session"
+    },
+    {
+      ". Subjects, Full Forms & Weekly Recurrence": "CI",
+      "__EMPTY": "CI (full form not specified in timetable)",
+      "__EMPTY_1": 2,
+      "__EMPTY_2": 1,
+      "__EMPTY_3": 2,
+      "__EMPTY_4": 2
+    },
+    {
+      ". Subjects, Full Forms & Weekly Recurrence": "WT",
+      "__EMPTY": "Web Technologies",
+      "__EMPTY_1": 1,
+      "__EMPTY_2": 1,
+      "__EMPTY_3": 1,
+      "__EMPTY_4": 1
+    },
+    {
+      ". Subjects, Full Forms & Weekly Recurrence": "UPSKILLING",
+      "__EMPTY": "Upskilling",
+      "__EMPTY_1": 1,
+      "__EMPTY_2": 1,
+      "__EMPTY_3": 1,
+      "__EMPTY_4": 1
+    },
+    {
+      ". Subjects, Full Forms & Weekly Recurrence": "PROJECT",
+      "__EMPTY": "Project",
+      "__EMPTY_1": 1,
+      "__EMPTY_2": 1,
+      "__EMPTY_3": 1,
+      "__EMPTY_4": 1
+    },
+    {
+      ". Subjects, Full Forms & Weekly Recurrence": "SPORTS",
+      "__EMPTY": "Sports",
+      "__EMPTY_1": 1,
+      "__EMPTY_2": 1,
+      "__EMPTY_3": 1,
+      "__EMPTY_4": 1
+    },
+    {
+      ". Subjects, Full Forms & Weekly Recurrence": "COUN",
+      "__EMPTY": "Counselling",
+      "__EMPTY_1": 1,
+      "__EMPTY_2": 1,
+      "__EMPTY_3": 1,
+      "__EMPTY_4": 1
+    },
+    {
+      ". Subjects, Full Forms & Weekly Recurrence": "LIB",
+      "__EMPTY": "Library",
+      "__EMPTY_1": 1,
+      "__EMPTY_2": 1,
+      "__EMPTY_3": 1,
+      "__EMPTY_4": 1
+    },
+    {
+      ". Subjects, Full Forms & Weekly Recurrence": "Combined Faculty–Subject View"
+    },
+    {
+      ". Subjects, Full Forms & Weekly Recurrence": "Subject",
+      "__EMPTY": "Faculty – CSE-1",
+      "__EMPTY_1": "Faculty – CSE-2",
+      "__EMPTY_2": "Faculty – CSE-3",
+      "__EMPTY_3": "Faculty – CSE-4"
+    },
+    {
+      ". Subjects, Full Forms & Weekly Recurrence": "Machine Learning",
+      "__EMPTY": "Dr. N. Thirupathi Rao",
+      "__EMPTY_1": "Dr. Ch. Swapna Priya",
+      "__EMPTY_2": "Dr. Ch. Swapna Priya",
+      "__EMPTY_3": "Dr. N. Thirupathi Rao"
+    },
+    {
+      ". Subjects, Full Forms & Weekly Recurrence": "HR & Project Management",
+      "__EMPTY": "Dr. K. G. K. Patnaik",
+      "__EMPTY_1": "U. V. Roshini",
+      "__EMPTY_2": "M. Suchitra",
+      "__EMPTY_3": "Dr. K. G. K. Patnaik"
+    },
+    {
+      ". Subjects, Full Forms & Weekly Recurrence": "Quantum Computing",
+      "__EMPTY": "Dr. Omkar Lakshmi Jagan",
+      "__EMPTY_1": "Dr. M. V. Krishna Mohan",
+      "__EMPTY_2": "Dr. M. V. Krishna Mohan",
+      "__EMPTY_3": "Dr. Omkar Lakshmi Jagan"
+    },
+    {
+      ". Subjects, Full Forms & Weekly Recurrence": "Deep Learning / MOOCs",
+      "__EMPTY": "Mrs. Nekkanti Renu",
+      "__EMPTY_1": "Mrs. Shalini Bharide",
+      "__EMPTY_2": "Mrs. Shalini Bharide",
+      "__EMPTY_3": "Mrs. Nekkanti Renu"
+    },
+    {
+      ". Subjects, Full Forms & Weekly Recurrence": "Embedded System",
+      "__EMPTY": "Dr. A. Sampath",
+      "__EMPTY_1": "Dr. A. Sampath",
+      "__EMPTY_2": "Dr. A. Sampath",
+      "__EMPTY_3": "Mr. A. S. N. Varma"
+    },
+    {
+      ". Subjects, Full Forms & Weekly Recurrence": "Disaster Management",
+      "__EMPTY": "Ms. M. Yoga Swarna",
+      "__EMPTY_1": "Mr. B. Ashok Kumar",
+      "__EMPTY_2": "Mrs. P. M. L. Mounika",
+      "__EMPTY_3": "Mr. P. Siva Kumar"
+    },
+    {
+      ". Subjects, Full Forms & Weekly Recurrence": "Prompt Engineering Lab",
+      "__EMPTY": "Dr. K. Ramesh Babu / Mrs. G. Kumari",
+      "__EMPTY_1": "Dr. K. Ramesh Babu / Mrs. G. Kumari",
+      "__EMPTY_2": "Dr. K. Ramesh Babu / Mrs. G. Kumari",
+      "__EMPTY_3": "Dr. K. Ramesh Babu / Mrs. G. Kumari"
+    },
+    {
+      ". Subjects, Full Forms & Weekly Recurrence": "CI",
+      "__EMPTY": "Ms. M. Divya Sri",
+      "__EMPTY_1": "Ms. M. Divya Sri",
+      "__EMPTY_2": "Mrs. Sushri Sangeetha Sahoo",
+      "__EMPTY_3": "Mrs. Y. Aswani"
+    },
+    {
+      ". Subjects, Full Forms & Weekly Recurrence": "Upskilling",
+      "__EMPTY": "Mrs. Y. Hari Krishna",
+      "__EMPTY_1": "Mrs. G. Pranathi",
+      "__EMPTY_2": "Mrs. Rajeswari",
+      "__EMPTY_3": "Mrs. G. Lavanya"
+    }
+  ],
+  "Sheet5": [
+    {
+      "Faculty Name": "Ch. Sridevi  ",
+      "Subject(s) Taught": "SE, CT Lab"
+    },
+    {
+      "Faculty Name": "Chinta Meenakshi",
+      "Subject(s) Taught": "UHV"
+    },
+    {
+      "Faculty Name": "Dr. A. Sampath",
+      "Subject(s) Taught": "Embedded System"
+    },
+    {
+      "Faculty Name": "Dr. B. Dhanuanjay",
+      "Subject(s) Taught": "AOR"
+    },
+    {
+      "Faculty Name": "Dr. Ch. Swapna Priya",
+      "Subject(s) Taught": "Flutter, Machine Learning"
+    },
+    {
+      "Faculty Name": "Dr. K. G. K. Patnaik",
+      "Subject(s) Taught": "HR & Project Management"
+    },
+    {
+      "Faculty Name": "Dr. K. Madhusudhana Rao",
+      "Subject(s) Taught": "DLCO"
+    },
+    {
+      "Faculty Name": "Dr. K. Niharika",
+      "Subject(s) Taught": "MFCS"
+    },
+    {
+      "Faculty Name": "Dr. K. Ramesh Babu",
+      "Subject(s) Taught": "Prompt Engineering Lab"
+    },
+    {
+      "Faculty Name": "Dr. K. Sirisha",
+      "Subject(s) Taught": "ES"
+    },
+    {
+      "Faculty Name": "Dr. M. V. Krishna Mohan",
+      "Subject(s) Taught": "Quantum Computing"
+    },
+    {
+      "Faculty Name": "Dr. N. Thirupathi Rao",
+      "Subject(s) Taught": "Machine Learning"
+    },
+    {
+      "Faculty Name": "Dr. Omkar Lakshmi Jagan",
+      "Subject(s) Taught": "Quantum Computing"
+    },
+    {
+      "Faculty Name": "Dr. R. Hanumantha Rao",
+      "Subject(s) Taught": "UHV"
+    },
+    {
+      "Faculty Name": "Dr. S. Naga Mallik Raj",
+      "Subject(s) Taught": "CT Lab, OOAD"
+    },
+    {
+      "Faculty Name": "Gudepu Lavanya",
+      "Subject(s) Taught": "JAVA, JAVA LAB, LCS, WT, UP, Upskilling"
+    },
+    {
+      "Faculty Name": "K. Prasannalatha",
+      "Subject(s) Taught": "SE, CT Lab"
+    },
+    {
+      "Faculty Name": "M. Jyothirmay",
+      "Subject(s) Taught": "DLCO, FSD"
+    },
+    {
+      "Faculty Name": "M. Suchitra",
+      "Subject(s) Taught": "HR & Project Management"
+    },
+    {
+      "Faculty Name": "Mr. A. S. N. Varma",
+      "Subject(s) Taught": "Embedded System"
+    },
+    {
+      "Faculty Name": "Mr. A.V.V. Chakrapani",
+      "Subject(s) Taught": "JAVA, JAVA LAB"
+    },
+    {
+      "Faculty Name": "Mr. B. Ashok Kumar",
+      "Subject(s) Taught": "Disaster Management"
+    },
+    {
+      "Faculty Name": "Mr. Guvvada Nagaraju",
+      "Subject(s) Taught": "FSD"
+    },
+    {
+      "Faculty Name": "Mr. K. Ramappala Naidu",
+      "Subject(s) Taught": "MFCS"
+    },
+    {
+      "Faculty Name": "Mr. P. Adithya",
+      "Subject(s) Taught": "FSD-II"
+    },
+    {
+      "Faculty Name": "Mr. P. Siva Kumar",
+      "Subject(s) Taught": "Disaster Management"
+    },
+    {
+      "Faculty Name": "Mr. VVRL Sastry",
+      "Subject(s) Taught": "SE, CT Lab"
+    },
+    {
+      "Faculty Name": "Mr. Y. Hari Krishna",
+      "Subject(s) Taught": "JAVA, JAVA LAB, LCS, WT, UP"
+    },
+    {
+      "Faculty Name": "Mr. Yogesh",
+      "Subject(s) Taught": "ES"
+    },
+    {
+      "Faculty Name": "Mrs. A. Priyanka Devi",
+      "Subject(s) Taught": "FSD-II, Class Coordinator"
+    },
+    {
+      "Faculty Name": "Mrs. A. Usha Rani",
+      "Subject(s) Taught": "ADSA, ADSA Lab"
+    },
+    {
+      "Faculty Name": "Mrs. G. Kumari",
+      "Subject(s) Taught": "Prompt Engineering Lab"
+    },
+    {
+      "Faculty Name": "Mrs. Gottumukkala Jyothi",
+      "Subject(s) Taught": "MFCS"
+    },
+    {
+      "Faculty Name": "Mrs. J. Priyanka",
+      "Subject(s) Taught": "JAVA, JAVA LAB"
+    },
+    {
+      "Faculty Name": "Mrs. K. Visala",
+      "Subject(s) Taught": "FSD"
+    },
+    {
+      "Faculty Name": "Mrs. Nekkanti Renu",
+      "Subject(s) Taught": "FSD, Deep Learning / MOOCs"
+    },
+    {
+      "Faculty Name": "Mrs. P. M. L. Mounika",
+      "Subject(s) Taught": "Disaster Management"
+    },
+    {
+      "Faculty Name": "Mrs. P. Pratima Rani",
+      "Subject(s) Taught": "DWDM, DWDM Lab"
+    },
+    {
+      "Faculty Name": "Mrs. P. Vani Manikayam",
+      "Subject(s) Taught": "DLCO"
+    },
+    {
+      "Faculty Name": "Mrs. Rajeswari",
+      "Subject(s) Taught": "ADSA Lab, Upskilling"
+    },
+    {
+      "Faculty Name": "Mrs. Shalini Bharide",
+      "Subject(s) Taught": "FSD, Deep Learning / MOOCs"
+    },
+    {
+      "Faculty Name": "Mrs. Sravani",
+      "Subject(s) Taught": "FSD"
+    },
+    {
+      "Faculty Name": "Mrs. Sushri Sangeetha Sahoo",
+      "Subject(s) Taught": "CI"
+    },
+    {
+      "Faculty Name": "Mrs. T. Keerthana",
+      "Subject(s) Taught": "FSD, JAVA LAB"
+    },
+    {
+      "Faculty Name": "Mrs. Y. Aswani",
+      "Subject(s) Taught": "CI"
+    },
+    {
+      "Faculty Name": "Mrs. Y. Hari Krishna",
+      "Subject(s) Taught": "Upskilling"
+    },
+    {
+      "Faculty Name": "Mrs. Y. Srilatha",
+      "Subject(s) Taught": "CD, DWDM Lab"
+    },
+    {
+      "Faculty Name": "Ms. A. Tejaswi",
+      "Subject(s) Taught": "UHV"
+    },
+    {
+      "Faculty Name": "Ms. B. Jayasi",
+      "Subject(s) Taught": "UHV"
+    },
+    {
+      "Faculty Name": "Ms. G. Bhagvasi / G. Bhargavi",
+      "Subject(s) Taught": "MFCS"
+    },
+    {
+      "Faculty Name": "Ms. G. Jyothi",
+      "Subject(s) Taught": "MFCS"
+    },
+    {
+      "Faculty Name": "Ms. Goketi Pranathi",
+      "Subject(s) Taught": "SE, CT Lab, LCS, WT, UP, Upskilling"
+    },
+    {
+      "Faculty Name": "Ms. M. Divya Sri",
+      "Subject(s) Taught": "CI"
+    },
+    {
+      "Faculty Name": "Ms. M. Yoga Swarna",
+      "Subject(s) Taught": "Disaster Management"
+    },
+    {
+      "Faculty Name": "Narava Jaya Lalitha",
+      "Subject(s) Taught": "MFCS"
+    },
+    {
+      "Faculty Name": "Rajeswari Modhalavalasa",
+      "Subject(s) Taught": "DLCO, LCS, WT, UP"
+    },
+    {
+      "Faculty Name": "U. V. Roshini",
+      "Subject(s) Taught": "HR & Project Management"
+    }
+  ]
+}

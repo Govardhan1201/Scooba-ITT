@@ -12,10 +12,15 @@ import WorkloadPage from './pages/hod/Workload';
 import OptimizationPage from './pages/hod/Optimization';
 import AcademicSetup from './pages/hod/AcademicSetup';
 import Settings from './pages/hod/Settings';
+import SimulatorPage from './pages/hod/Simulator';
+import ReportsPage from './pages/hod/Reports';
+import DataImportPage from './pages/hod/DataImport';
 
 // Pages - Faculty
 import FacultyDashboard from './pages/faculty/Dashboard';
 import FacultyProfile from './pages/faculty/Profile';
+import FacultyTimetable from './pages/faculty/Timetable';
+import FacultyWorkload from './pages/faculty/Workload';
 
 function ProtectedRoute({ children, allowedRoles }) {
   const { state } = useApp();
@@ -51,6 +56,9 @@ function AppRoutes() {
         <Route path="academic-setup" element={<AcademicSetup />} />
         <Route path="settings" element={<Settings />} />
         <Route path="approvals" element={<HODApprovals />} />
+        <Route path="simulator" element={<SimulatorPage />} />
+        <Route path="reports" element={<ReportsPage />} />
+        <Route path="data-import" element={<DataImportPage />} />
         <Route path="*" element={<div className="p-8 text-[var(--text-secondary)] text-center"><p className="text-2xl font-heading font-bold text-white mb-2">Coming Soon</p><p>This section is under active development.</p></div>} />
       </Route>
 
@@ -67,6 +75,9 @@ function AppRoutes() {
         <Route path="academic-setup" element={<AcademicSetup />} />
         <Route path="settings" element={<Settings />} />
         <Route path="approvals" element={<HODApprovals />} />
+        <Route path="simulator" element={<SimulatorPage />} />
+        <Route path="reports" element={<ReportsPage />} />
+        <Route path="data-import" element={<DataImportPage />} />
         <Route path="*" element={<div className="p-8 text-[var(--text-secondary)] text-center"><p className="text-2xl font-heading font-bold text-white mb-2">Coming Soon</p></div>} />
       </Route>
 
@@ -77,6 +88,8 @@ function AppRoutes() {
         </ProtectedRoute>
       }>
         <Route path="dashboard" element={<FacultyDashboard />} />
+        <Route path="timetable" element={<FacultyTimetable />} />
+        <Route path="workload" element={<FacultyWorkload />} />
         <Route path="profile" element={<FacultyProfile />} />
         <Route path="*" element={<div className="p-8 text-[var(--text-secondary)] text-center"><p className="text-2xl font-heading font-bold text-white mb-2">Coming Soon</p></div>} />
       </Route>

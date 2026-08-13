@@ -1,8 +1,10 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useApp, ACTIONS } from '../../context/AppContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, BookOpen, Layers, Plus, Edit2, Trash2, X, Save } from 'lucide-react';
+import { Users, BookOpen, Layers, Plus, Edit2, Trash2, X, Save, Clock, Book } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { getFacultyWorkloadProfile } from '../../engine/workload';
+import { deriveFacultyTimetables } from '../../engine/timetable';
 
 function Modal({ isOpen, onClose, title, children }) {
   return (
@@ -112,23 +114,40 @@ function FacultyManager({ state, dispatch, showToast }) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {state.faculty.map(f => (
+        {state.faculty.map(f => {
+          const profile = getFacultyWorkloadProfile(f);
+          const facultyTimetables = deriveFacultyTimetables(state.timetableGrids);
+          const assignments = facultyTimetables.get(f.id) || [];
+          const uniqueSubjects = [...new Set(assignments.map(a => a.subjectId))].map(id => state.subjects.find(s => s.id === id)?.name).filter(Boolean);
+
+          return (
           <div key={f.id} className="bg-[var(--surface-2)] p-4 rounded-xl border border-[var(--border)] flex flex-col justify-between">
             <div>
               <div className="flex justify-between items-start mb-2">
                 <h3 className="font-bold text-white text-lg leading-tight">{f.name}</h3>
                 <span className="text-[10px] bg-[var(--surface-3)] text-[var(--text-muted)] px-2 py-1 rounded font-mono shrink-0 ml-2">{f.empId}</span>
               </div>
-              <p className="text-xs text-[var(--primary-light)] font-bold mb-1">{f.designation}</p>
-              <p className="text-xs text-[var(--text-secondary)]">{f.specialization}</p>
-              <p className="text-xs text-[var(--text-muted)] mt-2">{f.skills?.length || 0} skills mapped</p>
+              <p className="text-xs text-[var(--primary-light)] font-bold mb-3">{f.designation}</p>
+              
+              <div className="space-y-2 mb-3">
+                <div className="flex items-center gap-2 text-xs text-[var(--text-secondary)]">
+                  <Clock className="w-3.5 h-3.5 text-[var(--text-muted)]" />
+                  <span>Workload: <strong className={cn(profile.effectiveWorkload > profile.maxHours ? "text-red-400" : "text-[var(--primary)]")}>{profile.effectiveWorkload}h / {profile.maxHours}h</strong></span>
+                </div>
+                <div className="flex items-start gap-2 text-xs text-[var(--text-secondary)]">
+                  <Book className="w-3.5 h-3.5 text-[var(--text-muted)] mt-0.5 shrink-0" />
+                  <span className="line-clamp-2">Subjects: {uniqueSubjects.length > 0 ? uniqueSubjects.join(', ') : <span className="italic opacity-50">No assignments</span>}</span>
+                </div>
+              </div>
+              
+              <p className="text-[10px] text-[var(--text-muted)]">{f.specialization || 'General'}</p>
             </div>
             <div className="mt-4 pt-3 border-t border-[var(--border)] flex justify-end gap-2">
               <button onClick={() => { setEditingFaculty(f); setFormData({ name: f.name, empId: f.empId, email: f.email, designation: f.designation, specialization: f.specialization }); setIsModalOpen(true); }} className="p-1.5 text-[var(--text-muted)] hover:text-[var(--primary)] transition-colors"><Edit2 className="w-4 h-4" /></button>
               <button onClick={() => handleDelete(f.id)} className="p-1.5 text-[var(--text-muted)] hover:text-red-400 transition-colors"><Trash2 className="w-4 h-4" /></button>
             </div>
           </div>
-        ))}
+        )})}
       </div>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={editingFaculty ? "Edit Faculty" : "Add Faculty"}>

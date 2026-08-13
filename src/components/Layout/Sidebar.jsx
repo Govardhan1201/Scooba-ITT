@@ -6,7 +6,7 @@ import { cn } from '../../lib/utils';
 import { 
   LayoutDashboard, Calendar, Users, Layers,
   BarChart3, Settings, LogOut, ChevronLeft, ChevronRight,
-  CheckSquare, Activity
+  CheckSquare, Activity, FlaskConical, FileDown, FileSpreadsheet
 } from 'lucide-react';
 
 export default function Sidebar() {
@@ -26,8 +26,10 @@ export default function Sidebar() {
         { to: `${base}/workload`, icon: BarChart3, label: 'Workload' },
         { to: `${base}/optimization`, icon: Activity, label: 'Optimization' },
         { to: `${base}/approvals`, icon: CheckSquare, label: 'Approvals', badge: state.absences.filter(a => a.status === 'PENDING_HOD').length },
-        { to: `${base}/faculty`, icon: Users, label: 'Faculty' },
-        { to: `${base}/academic-setup`, icon: Layers, label: 'Academic Setup' },
+        { to: `${base}/academic-setup`, icon: Users, label: 'Faculty & Subjects' },
+        { to: `${base}/simulator`, icon: FlaskConical, label: 'What-If Simulator' },
+        { to: `${base}/reports`, icon: FileDown, label: 'Reports' },
+        { to: `${base}/data-import`, icon: FileSpreadsheet, label: 'Data Import' },
         { to: `${base}/settings`, icon: Settings, label: 'Settings' },
       ];
     }

@@ -86,13 +86,22 @@ export function createEmptyGrid() {
  * Detect faculty collisions across all sections in a semester.
  * Returns array of collision objects.
  */
+/**
+ * Detect faculty collisions across ALL sections across ALL years.
+ */
 export function detectCollisions(allSectionGrids, facultyId, day, slotId, excludeKey = null) {
   const collisions = [];
+  if (!facultyId) return collisions;
   for (const [sectionId, grid] of Object.entries(allSectionGrids)) {
     const key = slotKey(day, slotId);
     if (key === excludeKey) continue;
     const cell = grid[key];
+    // Check primary faculty
     if (cell?.assignment?.facultyId === facultyId) {
+      collisions.push({ sectionId, day, slotId, type: 'FACULTY_CONFLICT' });
+    }
+    // Check secondary faculty (for LABs)
+    if (cell?.assignment?.facultyId2 === facultyId) {
       collisions.push({ sectionId, day, slotId, type: 'FACULTY_CONFLICT' });
     }
   }
@@ -183,14 +192,13 @@ export function checkPhase2Complete(grid) {
   return true;
 }
 
-// ─── Concentration-Based Auto-Suggest ────────────────────────
 /**
  * Smart subject placement based on cognitive science:
+ * - Fills the exact hours required by each subject.
+ * - Spreads subjects evenly across the week.
  * - Periods 1–2 (peak focus): hard/core subjects
  * - Periods 3–5 (sustained): medium difficulty
  * - Periods 6–7 (post-lunch): labs, practicals, light subjects
- *
- * Returns a pre-filled grid suggestion.
  */
 export function autoSuggestPlacement(subjects) {
   const grid = createEmptyGrid();
@@ -198,72 +206,97 @@ export function autoSuggestPlacement(subjects) {
   // Sort subjects into difficulty buckets
   const hard = subjects.filter((s) => s.difficulty === 'High' && s.type !== 'LAB');
   const medium = subjects.filter((s) => s.difficulty === 'Medium' && s.type !== 'LAB');
-  const light = subjects.filter((s) => s.difficulty === 'Low' && s.type !== 'LAB');
+  const light = subjects.filter((s) => (s.difficulty === 'Low' || !s.difficulty) && s.type !== 'LAB');
   const labs = subjects.filter((s) => s.type === 'LAB');
 
-  // Slot buckets by concentration level
-  const morningSlots = []; // Periods 1,2 → high focus
-  const midSlots = [];     // Periods 3,4,5
-  const postLunchSlots = [];// Periods 6,7 → labs
+  // We want to randomize day arrays to distribute load
+  const shuffledDays = () => [...DAYS].sort(() => Math.random() - 0.5);
 
-  DAYS.forEach((day) => {
-    morningSlots.push({ day, slotId: 1 }, { day, slotId: 2 });
-    midSlots.push({ day, slotId: 3 }, { day, slotId: 4 }, { day, slotId: 5 });
-    postLunchSlots.push({ day, slotId: 6 }, { day, slotId: 7 });
-  });
-
-  // Expand subjects to individual slots based on hoursPerWeek
-  const hardQueue = expandSubjectsToSlots(hard);
-  const mediumQueue = expandSubjectsToSlots(medium);
-  const lightQueue = expandSubjectsToSlots(light);
-
-  // Place in grid
-  placeInSlots(grid, hardQueue, morningSlots);
-  placeInSlots(grid, mediumQueue, midSlots);
-  placeInSlots(grid, lightQueue, [...midSlots, ...morningSlots]);
-  placeLabs(grid, labs, postLunchSlots);
-
-  return grid;
-}
-
-function expandSubjectsToSlots(subjects) {
-  const queue = [];
-  subjects.forEach((s) => {
-    for (let i = 0; i < (s.hoursPerWeek ?? 0); i++) {
-      queue.push({ subjectId: s.id, type: 'THEORY' });
-    }
-  });
-  return queue;
-}
-
-function placeInSlots(grid, queue, slots) {
-  let qi = 0;
-  for (const slot of slots) {
-    if (qi >= queue.length) break;
-    const key = slotKey(slot.day, slot.slotId);
-    if (!grid[key]?.assignment) {
-      grid[key].assignment = queue[qi];
-      qi++;
-    }
-  }
-}
-
-function placeLabs(grid, labs, postLunchSlots) {
-  labs.forEach((lab) => {
-    // Labs need 2 consecutive post-lunch slots on the same day
-    for (const day of DAYS) {
-      const daySlots = postLunchSlots.filter((s) => s.day === day);
-      if (daySlots.length >= 2) {
-        const k6 = slotKey(day, 6);
-        const k7 = slotKey(day, 7);
-        if (!grid[k6]?.assignment && !grid[k7]?.assignment) {
-          grid[k6].assignment = { subjectId: lab.id, type: 'LAB' };
-          grid[k7].assignment = { subjectId: lab.id, type: 'LAB', continued: true };
-          break;
+  const placeTheory = (subjectList, allowedPeriods) => {
+    subjectList.forEach(sub => {
+      let hoursNeeded = sub.hoursPerWeek || 3;
+      let hoursPlaced = 0;
+      
+      // Try to place max 1 hour per day
+      for (const day of shuffledDays()) {
+        if (hoursPlaced >= hoursNeeded) break;
+        // Check if subject is already on this day to avoid cognitive overload (unless forced)
+        if (hasSubjectOnDay(grid, sub.id, day) && hoursNeeded <= 6) continue;
+        
+        for (const period of allowedPeriods) {
+          const key = slotKey(day, period);
+          if (!grid[key].assignment) {
+            grid[key].assignment = { subjectId: sub.id, type: 'THEORY' };
+            hoursPlaced++;
+            break; // Move to next day
+          }
         }
       }
-    }
-  });
+      
+      // If we still need hours (grid is getting full), fall back to any available slot
+      if (hoursPlaced < hoursNeeded) {
+        for (const day of DAYS) {
+          if (hoursPlaced >= hoursNeeded) break;
+          for (const slot of TEACHING_SLOTS) {
+            const key = slotKey(day, slot.id);
+            if (!grid[key].assignment) {
+              grid[key].assignment = { subjectId: sub.id, type: 'THEORY' };
+              hoursPlaced++;
+              if (hoursPlaced >= hoursNeeded) break;
+            }
+          }
+        }
+      }
+    });
+  };
+
+  const placeLabs = (labList) => {
+    labList.forEach(lab => {
+      let hoursNeeded = lab.hoursPerWeek || 3;
+      let sessionsNeeded = Math.ceil(hoursNeeded / 2); // 2 hours per lab session typically
+      let sessionsPlaced = 0;
+
+      for (const day of shuffledDays()) {
+        if (sessionsPlaced >= sessionsNeeded) break;
+        // Labs prefer periods 6 and 7
+        const k6 = slotKey(day, 6);
+        const k7 = slotKey(day, 7);
+        if (!grid[k6].assignment && !grid[k7].assignment) {
+          grid[k6].assignment = { subjectId: lab.id, type: 'LAB' };
+          grid[k7].assignment = { subjectId: lab.id, type: 'LAB', continued: true };
+          sessionsPlaced++;
+        }
+      }
+      
+      // Fallback to periods 3,4,5 if 6,7 are full
+      if (sessionsPlaced < sessionsNeeded) {
+        for (const day of shuffledDays()) {
+          if (sessionsPlaced >= sessionsNeeded) break;
+          const k3 = slotKey(day, 3);
+          const k4 = slotKey(day, 4);
+          const k5 = slotKey(day, 5);
+          if (!grid[k3].assignment && !grid[k4].assignment && !grid[k5].assignment) {
+             grid[k3].assignment = { subjectId: lab.id, type: 'LAB' };
+             grid[k4].assignment = { subjectId: lab.id, type: 'LAB', continued: true };
+             grid[k5].assignment = { subjectId: lab.id, type: 'LAB', continued: true };
+             sessionsPlaced++;
+          } else if (!grid[k4].assignment && !grid[k5].assignment) {
+             grid[k4].assignment = { subjectId: lab.id, type: 'LAB' };
+             grid[k5].assignment = { subjectId: lab.id, type: 'LAB', continued: true };
+             sessionsPlaced++;
+          }
+        }
+      }
+    });
+  };
+
+  // Execute placements
+  placeLabs(labs); // Place labs first as they need consecutive blocks
+  placeTheory(hard, [1, 2, 3]); // Hard subjects in morning
+  placeTheory(medium, [3, 4, 5]); // Medium subjects mid-day
+  placeTheory(light, [1, 2, 3, 4, 5, 6, 7]); // Light subjects anywhere available
+
+  return grid;
 }
 
 // ─── Faculty Timetable Derivation ─────────────────────────────

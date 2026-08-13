@@ -1,12 +1,12 @@
-﻿import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useApp, ACTIONS } from "../../context/AppContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "../../lib/utils";
-import { deriveFacultyTimetables } from "../../engine/timetable";
+import { deriveFacultyTimetables, TIME_SLOTS, DAYS } from "../../engine/timetable";
 import { getFacultyWorkloadProfile } from "../../engine/workload";
 import {
   BookOpen, Clock, Calendar, Bell, User, ChevronRight,
-  TrendingUp, AlertTriangle, CheckCircle, Send, Loader
+  TrendingUp, AlertTriangle, CheckCircle, Send, Loader, ArrowLeftRight, Timer
 } from "lucide-react";
 
 const DAYS_SHORT = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -35,6 +35,50 @@ export default function FacultyDashboard() {
   const myFaculty = state.faculty.find(f => f.id === me?.facultyId) ?? state.faculty.find(f => f.email === me?.email);
 
   const [absenceForm, setAbsenceForm] = useState({ open: false, fromDate: "", toDate: "", reason: "", note: "", submitting: false });
+  const [reallocateModal, setReallocateModal] = useState(null); // { key, sectionId, slotLabel, subjectName }
+  const [reallocateTo, setReallocateTo] = useState('');
+  const [now, setNow] = useState(new Date());
+
+  // Update clock every 30 seconds for accurate 10-min checks
+  useEffect(() => {
+    const t = setInterval(() => setNow(new Date()), 30000);
+    return () => clearInterval(t);
+  }, []);
+
+  /**
+   * Returns true if class start is >10 minutes from now.
+   * slotStart is like "08:45".
+   */
+  const canReallocate = (slotStart) => {
+    const [h, m] = slotStart.split(':').map(Number);
+    const classTime = new Date();
+    classTime.setHours(h, m, 0, 0);
+    const diffMs = classTime - now;
+    return diffMs > 10 * 60 * 1000; // more than 10 minutes away
+  };
+
+  const submitReallocation = () => {
+    if (!reallocateTo || !reallocateModal) return;
+    const { key, sectionId, slotLabel, subjectName } = reallocateModal;
+    const newFac = state.faculty.find(f => f.id === reallocateTo);
+    if (!newFac) return;
+    dispatch({
+      type: ACTIONS.UPDATE_TIMETABLE_SLOT,
+      payload: { sectionId, key, assignment: { ...state.timetableGrids[sectionId]?.[key]?.assignment, facultyId: reallocateTo } }
+    });
+    dispatch({
+      type: ACTIONS.ADD_NOTIFICATION,
+      payload: {
+        id: `NOTIF_${Date.now()}`, userId: reallocateTo,
+        title: 'Class Reallocated to You',
+        message: `${myFaculty?.name} has reallocated ${subjectName} (${slotLabel}) to you as a temporary cover.`,
+        type: 'WARNING', read: false, createdAt: new Date().toISOString(),
+      },
+    });
+    showToast(`Class reallocated to ${newFac.name}`, 'success');
+    setReallocateModal(null);
+    setReallocateTo('');
+  };
 
   // Workload profile
   const profile = useMemo(() => {
@@ -227,6 +271,59 @@ export default function FacultyDashboard() {
         </div>
       </div>
 
+      {/* Reallocation Panel */}
+      <div className="glass-panel rounded-2xl border border-[var(--border)] overflow-hidden">
+        <div className="px-6 py-4 border-b border-[var(--border)] flex items-center gap-3">
+          <ArrowLeftRight className="w-5 h-5 text-yellow-400" />
+          <h2 className="font-heading font-bold text-white">Temporary Class Reallocation</h2>
+          <span className="ml-auto text-[10px] text-[var(--text-muted)] bg-[var(--surface-2)] px-2 py-1 rounded-full border border-[var(--border)] flex items-center gap-1">
+            <Timer className="w-3 h-3" /> Must be &gt;10 min before class
+          </span>
+        </div>
+        <div className="p-4 space-y-3">
+          <p className="text-xs text-[var(--text-secondary)]">
+            Temporarily reallocate your classes to another faculty member without HOD approval — only available until 10 minutes before the class.
+          </p>
+          {myEntries.length === 0 && (
+            <p className="text-[var(--text-muted)] text-sm text-center py-6">No classes assigned yet.</p>
+          )}
+          {myEntries.map(entry => {
+            const slot = TIME_SLOTS.find(s => s.id === entry.slotId);
+            const subject = state.subjects.find(s => s.id === entry.subjectId);
+            const section = state.sections.find(s => s.id === entry.sectionId);
+            const slotStart = slot?.start ?? '08:45';
+            const allowed = canReallocate(slotStart);
+            const entryKey = `${entry.day}_${entry.slotId}_${entry.sectionId}`;
+            return (
+              <div key={entryKey} className="flex items-center justify-between gap-3 p-3 bg-[var(--surface-2)] rounded-xl border border-[var(--border)]">
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-white truncate">{subject?.name ?? entry.subjectId}</p>
+                  <p className="text-[10px] text-[var(--text-muted)] font-mono mt-0.5">
+                    {entry.day} · {slot?.label} · {section?.label}
+                  </p>
+                </div>
+                <button
+                  onClick={() => {
+                    if (!allowed) { showToast('Cannot reallocate — less than 10 minutes before class!', 'error'); return; }
+                    setReallocateModal({ key: `${entry.day}_${entry.slotId}`, sectionId: entry.sectionId, slotLabel: slot?.label, subjectName: subject?.name ?? entry.subjectId });
+                    setReallocateTo('');
+                  }}
+                  className={cn(
+                    'btn text-xs flex items-center gap-1.5 shrink-0',
+                    allowed
+                      ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/30 hover:bg-yellow-500/20'
+                      : 'opacity-40 cursor-not-allowed bg-[var(--surface-3)] text-[var(--text-muted)] border border-[var(--border)]'
+                  )}
+                >
+                  <ArrowLeftRight className="w-3.5 h-3.5" />
+                  {allowed ? 'Reallocate' : 'Locked'}
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Notifications */}
       {myNotifs.length > 0 && (
         <div className="glass-panel rounded-2xl border border-[var(--border)] overflow-hidden">
@@ -295,6 +392,44 @@ export default function FacultyDashboard() {
                 <button onClick={submitAbsence} disabled={absenceForm.submitting} className="btn btn-primary flex-1 py-2.5 rounded-xl flex items-center justify-center gap-2">
                   {absenceForm.submitting ? <Loader className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
                   {absenceForm.submitting ? "Submitting..." : "Submit Request"}
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Reallocation Confirm Modal */}
+      <AnimatePresence>
+        {reallocateModal && (
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={e => { if (e.target === e.currentTarget) setReallocateModal(null); }}
+          >
+            <motion.div
+              initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 20 }}
+              className="glass-panel rounded-2xl p-8 w-full max-w-md border border-yellow-500/30 shadow-2xl"
+            >
+              <h2 className="text-xl font-heading font-bold text-white mb-2 flex items-center gap-3">
+                <ArrowLeftRight className="w-5 h-5 text-yellow-400" /> Reallocate Class
+              </h2>
+              <p className="text-sm text-[var(--text-secondary)] mb-6">
+                Temporarily hand off <strong className="text-white">{reallocateModal.subjectName}</strong> ({reallocateModal.slotLabel}) to another faculty member.
+              </p>
+              <div>
+                <label className="block text-xs font-bold text-[var(--text-secondary)] uppercase tracking-wider mb-1.5">Assign To *</label>
+                <select value={reallocateTo} onChange={e => setReallocateTo(e.target.value)} className="input-field">
+                  <option value="">Select Faculty</option>
+                  {state.faculty.filter(f => f.id !== myFaculty?.id && f.status === 'ACTIVE').map(f => (
+                    <option key={f.id} value={f.id}>{f.name} — {f.designation}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex gap-3 mt-6">
+                <button onClick={() => setReallocateModal(null)} className="btn btn-secondary flex-1 py-2.5 rounded-xl">Cancel</button>
+                <button onClick={submitReallocation} disabled={!reallocateTo} className="btn flex-1 py-2.5 rounded-xl bg-yellow-500/10 text-yellow-400 border border-yellow-500/30 hover:bg-yellow-500/20 font-semibold flex items-center justify-center gap-2">
+                  <ArrowLeftRight className="w-4 h-4" /> Confirm Reallocation
                 </button>
               </div>
             </motion.div>

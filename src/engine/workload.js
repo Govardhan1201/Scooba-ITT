@@ -8,6 +8,7 @@ export const DESIGNATION_DEFAULTS = {
   Professor: { maxHours: 10, label: 'Professor', shortLabel: 'Prof' },
   'Associate Professor': { maxHours: 16, label: 'Associate Professor', shortLabel: 'Assoc. Prof' },
   'Assistant Professor': { maxHours: 20, label: 'Assistant Professor', shortLabel: 'Asst. Prof' },
+  Lecturer: { maxHours: 10, label: 'Lecturer', shortLabel: 'Lec' },
 };
 
 // ─── Responsibility Weight Defaults ──────────────────────────
@@ -92,7 +93,7 @@ export function classifyWorkload(utilization, thresholds = DEFAULT_THRESHOLDS) {
  */
 export function getFacultyWorkloadProfile(faculty, weights = DEFAULT_WEIGHTS, thresholds = DEFAULT_THRESHOLDS) {
   const designationInfo = DESIGNATION_DEFAULTS[faculty.designation] ?? { maxHours: 20 };
-  const maxHours = faculty.customWorkloadLimit ?? designationInfo.maxHours;
+  const maxHours = designationInfo.maxHours; // Strict enforcement, ignore custom limits
   const { breakdown, rawHours, effectiveWorkload, rawBreakdown } = calculateWorkload(faculty, weights);
   const utilization = calculateUtilization(effectiveWorkload, maxHours);
   const status = classifyWorkload(utilization, thresholds);
