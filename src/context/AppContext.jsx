@@ -110,6 +110,7 @@ export const ACTIONS = {
 
   // Semesters
   ADD_SEMESTER: 'ADD_SEMESTER',
+  UPDATE_SEMESTER: 'UPDATE_SEMESTER',
   SET_CURRENT_SEMESTER: 'SET_CURRENT_SEMESTER',
 };
 
@@ -248,6 +249,8 @@ function appReducer(state, action) {
     // Semesters
     case ACTIONS.ADD_SEMESTER:
       return { ...state, semesters: [...state.semesters, action.payload] };
+    case ACTIONS.UPDATE_SEMESTER:
+      return { ...state, semesters: state.semesters.map((s) => s.id === action.payload.id ? { ...s, ...action.payload } : s) };
     case ACTIONS.SET_CURRENT_SEMESTER:
       return { ...state, currentSemester: action.payload };
 
