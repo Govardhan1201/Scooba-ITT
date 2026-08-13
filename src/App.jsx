@@ -14,6 +14,7 @@ import Settings from './pages/hod/Settings';
 
 // Pages - Faculty
 import FacultyDashboard from './pages/faculty/Dashboard';
+import FacultyProfile from './pages/faculty/Profile';
 
 function ProtectedRoute({ children, allowedRoles }) {
   const { state } = useApp();
@@ -74,6 +75,7 @@ function AppRoutes() {
         </ProtectedRoute>
       }>
         <Route path="dashboard" element={<FacultyDashboard />} />
+        <Route path="profile" element={<FacultyProfile />} />
         <Route path="*" element={<div className="p-8 text-[var(--text-secondary)] text-center"><p className="text-2xl font-heading font-bold text-white mb-2">Coming Soon</p></div>} />
       </Route>
 

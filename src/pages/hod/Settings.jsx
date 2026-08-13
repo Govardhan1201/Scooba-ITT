@@ -1,7 +1,7 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useApp, ACTIONS } from '../../context/AppContext';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Settings as SettingsIcon, Shield, Archive, AlertTriangle, Save, CheckCircle, Plus } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Settings as SettingsIcon, Shield, Archive, Save, Plus, KeyRound, Copy, RefreshCw } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
 export default function Settings() {
@@ -45,33 +45,72 @@ export default function Settings() {
 
 function GeneralSettings({ state, dispatch, showToast }) {
   const [formData, setFormData] = useState(state.settings);
+  const [copied, setCopied] = useState(false);
 
   const handleSave = () => {
     dispatch({ type: ACTIONS.UPDATE_SETTINGS, payload: formData });
     showToast('General settings updated', 'success');
   };
 
+  const generateCode = () => {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    const part = () => Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+    const code = `${part()}-${part()}`;
+    dispatch({ type: ACTIONS.GENERATE_ACCESS_CODE, payload: code });
+    showToast(`Access code generated: ${code}`, 'success');
+  };
+
+  const copyCode = () => {
+    if (state.asstHodAccessCode) {
+      navigator.clipboard.writeText(state.asstHodAccessCode).catch(() => {});
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
   return (
-    <div className="glass-panel p-6 rounded-2xl border border-[var(--border)] space-y-6">
-      <h2 className="text-xl font-bold text-white">General Information</h2>
-      
+    <div className="glass-panel p-6 rounded-2xl border border-[var(--border)] space-y-8">
       <div className="space-y-4 max-w-2xl">
-        <div>
-          <label className="text-xs font-bold text-[var(--text-secondary)]">Institution Name</label>
-          <input type="text" className="input-field mt-1" value={formData.institutionName} onChange={e => setFormData({...formData, institutionName: e.target.value})} />
-        </div>
-        <div>
-          <label className="text-xs font-bold text-[var(--text-secondary)]">Department Name</label>
-          <input type="text" className="input-field mt-1" value={formData.departmentName} onChange={e => setFormData({...formData, departmentName: e.target.value})} />
-        </div>
-        <div>
-          <label className="text-xs font-bold text-[var(--text-secondary)]">Academic Year</label>
-          <input type="text" className="input-field mt-1" value={formData.academicYear} onChange={e => setFormData({...formData, academicYear: e.target.value})} />
-        </div>
-        
-        <button onClick={handleSave} className="btn btn-primary mt-4">
+        <h2 className="text-xl font-bold text-white">General Information</h2>
+        <div><label className="text-xs font-bold text-[var(--text-secondary)]">Institution Name</label><input type="text" className="input-field mt-1" value={formData.institutionName} onChange={e => setFormData({...formData, institutionName: e.target.value})} /></div>
+        <div><label className="text-xs font-bold text-[var(--text-secondary)]">Department Name</label><input type="text" className="input-field mt-1" value={formData.departmentName} onChange={e => setFormData({...formData, departmentName: e.target.value})} /></div>
+        <div><label className="text-xs font-bold text-[var(--text-secondary)]">Academic Year</label><input type="text" className="input-field mt-1" value={formData.academicYear || ''} onChange={e => setFormData({...formData, academicYear: e.target.value})} /></div>
+        <button onClick={handleSave} className="btn btn-primary">
           <Save className="w-4 h-4" /> Save Settings
         </button>
+      </div>
+
+      {/* Asst HOD Access Code */}
+      <div className="border-t border-[var(--border)] pt-6 space-y-4 max-w-2xl">
+        <div>
+          <h2 className="text-xl font-bold text-white flex items-center gap-2"><KeyRound className="w-5 h-5 text-[var(--accent)]" /> Assistant HOD Access Code</h2>
+          <p className="text-[var(--text-secondary)] text-sm mt-1">Generate a one-time access code to share with your Assistant HOD. They must enter this code on their first login to unlock the portal.</p>
+        </div>
+
+        {state.asstHodAccessCode ? (
+          <div className="flex items-center gap-3">
+            <div className="flex-1 bg-[var(--surface-3)] rounded-xl px-5 py-4 font-mono text-2xl tracking-[0.4em] text-[var(--primary)] border border-[var(--primary)]/30 text-center">
+              {state.asstHodAccessCode}
+            </div>
+            <button onClick={copyCode} className={cn("btn shrink-0", copied ? "bg-[var(--success)] text-white" : "btn-secondary")}>
+              <Copy className="w-4 h-4" /> {copied ? 'Copied!' : 'Copy'}
+            </button>
+            <button onClick={generateCode} title="Regenerate" className="btn btn-secondary shrink-0">
+              <RefreshCw className="w-4 h-4" />
+            </button>
+          </div>
+        ) : (
+          <button onClick={generateCode} className="btn bg-[var(--accent)] text-black font-bold shadow-md shadow-[var(--accent)]/20">
+            <KeyRound className="w-4 h-4" /> Generate Access Code for Asst. HOD
+          </button>
+        )}
+
+        {state.asstHodUnlocked && (
+          <p className="text-xs text-[var(--primary)] flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[var(--primary)] inline-block"></span>
+            Asst. HOD portal is currently unlocked in this session.
+          </p>
+        )}
       </div>
     </div>
   );

@@ -41,6 +41,10 @@ const initialState = {
   settings: DEFAULT_SETTINGS,
   rules: DEFAULT_RULES,
 
+  // Access Control
+  asstHodAccessCode: null,      // HOD-generated code to unlock Asst HOD portal
+  asstHodUnlocked: false,       // whether current session has unlocked it
+
   // UI State
   sidebarCollapsed: false,
   toasts: [],
@@ -112,6 +116,10 @@ export const ACTIONS = {
   ADD_SEMESTER: 'ADD_SEMESTER',
   UPDATE_SEMESTER: 'UPDATE_SEMESTER',
   SET_CURRENT_SEMESTER: 'SET_CURRENT_SEMESTER',
+
+  // Access
+  GENERATE_ACCESS_CODE: 'GENERATE_ACCESS_CODE',
+  UNLOCK_ASST_HOD: 'UNLOCK_ASST_HOD',
 };
 
 // ─── Reducer ──────────────────────────────────────────────────
@@ -254,6 +262,12 @@ function appReducer(state, action) {
     case ACTIONS.SET_CURRENT_SEMESTER:
       return { ...state, currentSemester: action.payload };
 
+    // Access
+    case ACTIONS.GENERATE_ACCESS_CODE:
+      return { ...state, asstHodAccessCode: action.payload };
+    case ACTIONS.UNLOCK_ASST_HOD:
+      return { ...state, asstHodUnlocked: true };
+
     default:
       return state;
   }
@@ -336,10 +350,10 @@ export function AppProvider({ children }) {
     const user = USERS.find((u) => u.email === email && u.password === password);
     if (user) {
       dispatch({ type: ACTIONS.LOGIN, payload: user });
-      return true;
+      return user;   // return the user object so callers can inspect role
     }
     dispatch({ type: ACTIONS.AUTH_ERROR, payload: 'Invalid email or password.' });
-    return false;
+    return null;
   };
 
   const logout = () => dispatch({ type: ACTIONS.LOGOUT });
@@ -355,6 +369,7 @@ export function AppProvider({ children }) {
       showToast,
       login,
       logout,
+      users: USERS,
     }}>
       {children}
     </AppContext.Provider>
